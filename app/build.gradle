@@ -1,0 +1,89 @@
+apply plugin: 'com.android.application'
+apply plugin: 'com.neenbedankt.android-apt'
+apply plugin: 'org.greenrobot.greendao'
+
+
+android {
+    compileSdkVersion 25
+    buildToolsVersion "24.0.2"
+    defaultConfig {
+        applicationId "com.zividig.newnestziv"
+        minSdkVersion 16
+        targetSdkVersion 25
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        vectorDrawables.useSupportLibrary = true
+        externalNativeBuild {
+            cmake {
+                cppFlags "-frtti -fexceptions"
+            }
+        }
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    externalNativeBuild {
+        cmake {
+            path "CMakeLists.txt"
+        }
+    }
+}
+
+greendao {
+    schemaVersion 1
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    testCompile 'junit:junit:4.12'
+
+    compile "com.android.support:appcompat-v7:25.2.0"
+    compile "com.android.support:recyclerview-v7:25.2.0"
+    compile "com.android.support:cardview-v7:25.2.0"
+    compile "com.android.support:design:25.2.0"
+    compile "com.android.support:support-vector-drawable:25.2.0"
+    compile "com.android.support:animated-vector-drawable:25.2.0"
+
+    //NavigationTab
+    compile 'me.majiajie:pager-bottom-tab-strip:2.0.0'
+
+    //butterknife
+    compile 'com.jakewharton:butterknife:8.4.0'
+    apt 'com.jakewharton:butterknife-compiler:8.4.0' //添加这行
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.4.0'
+
+    //dagger2
+    compile 'com.google.dagger:dagger:2.8'
+    apt 'com.google.dagger:dagger-compiler:2.8'
+    compile 'org.glassfish:javax.annotation:10.0-b28'// 添加java 注解库
+
+    //rxjava
+    compile 'io.reactivex:rxandroid:1.2.1'
+    compile 'io.reactivex:rxjava:x.y.z'
+
+    //retrofit
+    compile 'com.squareup.retrofit2:retrofit:2.1.0'
+    compile 'com.squareup.retrofit2:converter-gson:2.0.1'
+    compile 'com.squareup.retrofit2:adapter-rxjava:2.0.1'
+
+    // database
+    compile'org.greenrobot:greendao:3.0.1'
+    compile'org.greenrobot:greendao-generator:3.0.0'
+    debugCompile "com.amitshekhar.android:debug-db:1.0.0"
+
+    //gson
+    compile 'com.google.code.gson:gson:2.6.2'
+
+    // logger
+    compile "com.jakewharton.timber:timber:4.5.1"
+
+    //permission
+    compile 'com.yanzhenjie:permission:1.0.5'
+}
