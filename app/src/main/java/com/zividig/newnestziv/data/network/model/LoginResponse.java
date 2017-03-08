@@ -48,4 +48,13 @@ public class LoginResponse {
     public void setAlarmStatus(String alarmStatus) {
         this.alarmStatus = alarmStatus;
     }
+
+    @Override
+    public String toString() {
+        return "LoginResponse{" +
+                "status=" + status +
+                ", token='" + token + '\'' +
+                ", alarmStatus='" + alarmStatus + '\'' +
+                '}';
+    }
 }

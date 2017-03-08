@@ -45,12 +45,14 @@ public abstract class BaseActivity extends AppCompatActivity
                 .applicationComponent(((ZivApp) getApplication()).getComponent())
                 .build();
 
-
     }
 
     public ActivityComponent getActivityComponent() {
         return mActivityComponent;
     }
+
+    @Override
+    public void initView() {}
 
     @Override
     public void setStatusBar() {

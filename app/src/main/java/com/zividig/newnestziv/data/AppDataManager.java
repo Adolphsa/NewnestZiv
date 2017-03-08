@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.zividig.newnestziv.data.db.DbHelper;
 import com.zividig.newnestziv.data.network.ApiHelper;
+import com.zividig.newnestziv.data.network.model.DeviceListResponse;
 import com.zividig.newnestziv.data.network.model.LoginResponse;
 import com.zividig.newnestziv.data.prefs.PreferencesHelper;
 import com.zividig.newnestziv.di.ApplicationContext;
@@ -44,4 +45,11 @@ public class AppDataManager implements DataManager{
     public Observable<LoginResponse> doLoginCall(Map<String,String> options, RequestBody body) {
         return mApiHelper.doLoginCall(options,body);
     }
+
+    @Override
+    public Observable<DeviceListResponse> doGetDeviceList(Map<String, String> options, RequestBody body) {
+        return mApiHelper.doGetDeviceList(options,body);
+    }
+
+
 }

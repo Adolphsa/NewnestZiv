@@ -40,7 +40,6 @@
             android:layout_height="wrap_content"
             android:hint="@string/login_et_user"
             android:padding="10dp"
-            android:textColor="@color/white"
             android:drawablePadding="70dp"
             android:background="@drawable/shape_login_border"
             />

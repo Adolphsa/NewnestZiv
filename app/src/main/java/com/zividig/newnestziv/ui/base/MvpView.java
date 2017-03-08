@@ -23,4 +23,6 @@ public interface MvpView {
 
     void setStatusBar();
 
+    void initView();
+
 }

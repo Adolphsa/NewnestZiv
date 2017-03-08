@@ -44,4 +44,9 @@ public class SettingFragment extends BaseFragment implements SettingMvpView {
     public void setStatusBar() {
 
     }
+
+    @Override
+    public void initView() {
+
+    }
 }

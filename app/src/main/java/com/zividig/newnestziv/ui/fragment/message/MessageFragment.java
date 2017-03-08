@@ -44,4 +44,9 @@ public class MessageFragment extends BaseFragment implements MessageMvpView {
     public void setStatusBar() {
 
     }
+
+    @Override
+    public void initView() {
+
+    }
 }

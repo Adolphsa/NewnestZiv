@@ -31,10 +31,12 @@ android {
             path "CMakeLists.txt"
         }
     }
-}
 
-greendao {
-    schemaVersion 1
+    greendao{
+        schemaVersion 1
+        targetGenDir 'src/main/java'
+    }
+
 }
 
 dependencies {
@@ -53,6 +55,9 @@ dependencies {
 
     //NavigationTab
     compile 'me.majiajie:pager-bottom-tab-strip:2.0.0'
+
+    //轮播器
+    compile 'com.bigkoo:convenientbanner:2.0.5'
 
     //butterknife
     compile 'com.jakewharton:butterknife:8.4.0'
@@ -74,9 +79,7 @@ dependencies {
     compile 'com.squareup.retrofit2:adapter-rxjava:2.0.1'
 
     // database
-    compile'org.greenrobot:greendao:3.0.1'
-    compile'org.greenrobot:greendao-generator:3.0.0'
-    debugCompile "com.amitshekhar.android:debug-db:1.0.0"
+    compile 'org.greenrobot:greendao:3.1.0'
 
     //gson
     compile 'com.google.code.gson:gson:2.6.2'

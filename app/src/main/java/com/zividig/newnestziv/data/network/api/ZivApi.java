@@ -1,5 +1,6 @@
 package com.zividig.newnestziv.data.network.api;
 
+import com.zividig.newnestziv.data.network.model.DeviceListResponse;
 import com.zividig.newnestziv.data.network.model.LoginResponse;
 
 import java.util.Map;
@@ -22,4 +23,9 @@ public interface ZivApi {
     @Headers({"Content-Type: application/json","Accept: application/json"})
     @POST("user/login")
     Observable<LoginResponse> getLoginInfo(@QueryMap Map<String,String> options, @Body RequestBody body);
+
+    //获取设备列表信息
+    @Headers({"Content-Type: application/json","Accept: application/json"})
+    @POST("device/mine")
+    Observable<DeviceListResponse> getDeviceListInfo(@QueryMap Map<String,String> options, @Body RequestBody body);
 }

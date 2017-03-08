@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+    <include layout="@layout/layout_title"
+        android:id="@+id/my_car_title"
+        />
+    <TextView
+        android:id="@+id/my_car_device_state"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/my_car_device_state"
+        android:textColor="@color/white"
+        android:textSize="15sp"
+        android:padding="3dp"
+        android:layout_marginTop="8dp"
+        />
+    <com.bigkoo.convenientbanner.ConvenientBanner
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/my_car_convenientBanner"
+        android:layout_width="match_parent"
+        android:layout_height="180dp"
+        app:canLoop="true"
+        android:layout_below="@+id/my_car_title"
+        />
+
+    <GridView
+        android:id="@+id/my_car_grid"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:numColumns="3"
+        android:padding="10dp"
+        android:horizontalSpacing="2dp"
+        android:verticalSpacing="2dp"
+        android:layout_below="@id/my_car_convenientBanner"
+        />
+
+
+</RelativeLayout>

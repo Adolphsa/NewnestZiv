@@ -3,6 +3,7 @@ package com.zividig.newnestziv.data.network;
 
 import com.zividig.newnestziv.ZivApp;
 import com.zividig.newnestziv.data.network.api.ZivApi;
+import com.zividig.newnestziv.data.network.model.DeviceListResponse;
 import com.zividig.newnestziv.data.network.model.LoginResponse;
 import com.zividig.newnestziv.utils.NetworkUtil;
 
@@ -104,4 +105,10 @@ public class AppApiHelper implements ApiHelper{
 
         return getZivApiService().getLoginInfo(options,body);
     }
+
+    @Override
+    public Observable<DeviceListResponse> doGetDeviceList(Map<String, String> options, RequestBody body) {
+        return getZivApiService().getDeviceListInfo(options,body);
+    }
+
 }

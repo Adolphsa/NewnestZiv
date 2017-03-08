@@ -74,9 +74,7 @@ public class ApplicationModule {
 
     @Provides
     @Singleton
-    DbHelper provideDbHelper(AppDbHelper appDbHelper) {
-        return appDbHelper;
-    }
+    DbHelper provideDbHelper(AppDbHelper appDbHelper) {return appDbHelper;}
 
     @Provides
     @Singleton
