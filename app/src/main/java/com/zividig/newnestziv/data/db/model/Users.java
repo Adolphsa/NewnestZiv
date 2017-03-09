@@ -23,17 +23,6 @@ public class Users {
     @Property(nameInDb = "password")
     private String password;
 
-    @Property(nameInDb = "token")
-    private String token;
-
-    public String getToken() {
-        return this.token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
-    }
-
     public String getPassword() {
         return this.password;
     }
@@ -58,12 +47,11 @@ public class Users {
         this.id = id;
     }
 
-    @Generated(hash = 2113421899)
-    public Users(Long id, String username, String password, String token) {
+    @Generated(hash = 114396017)
+    public Users(Long id, String username, String password) {
         this.id = id;
         this.username = username;
         this.password = password;
-        this.token = token;
     }
 
     @Generated(hash = 2146996206)

@@ -11,7 +11,4 @@ public class AppConstants {
     public static final String DB_NAME = "ziv_mvp.db";
     public static final String PREF_NAME = "ziv_pref";
 
-
-
-
 }

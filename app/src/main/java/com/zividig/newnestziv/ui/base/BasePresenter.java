@@ -4,8 +4,7 @@ import com.zividig.newnestziv.data.DataManager;
 
 import javax.inject.Inject;
 
-import rx.Subscription;
-import rx.subscriptions.CompositeSubscription;
+import io.reactivex.disposables.CompositeDisposable;
 
 /**
  * Created by adolph
@@ -16,19 +15,14 @@ public class BasePresenter<V extends MvpView> implements MvpPresenter<V> {
 
     private final DataManager mDataManager;
 
-    private final CompositeSubscription mCompositeSubscription;
+    private final CompositeDisposable mCompositeDisposable;
 
     private V mMvpView;
 
     @Inject
-    public BasePresenter(DataManager dataManager,CompositeSubscription compositeSubscription) {
+    public BasePresenter(DataManager dataManager,CompositeDisposable compositeDisposable) {
         this.mDataManager = dataManager;
-        this.mCompositeSubscription = compositeSubscription;
-    }
-
-    //增加订阅
-    protected void addSubscription(Subscription s){
-        this.mCompositeSubscription.add(s);
+        this.mCompositeDisposable = compositeDisposable;
     }
 
     @Override
@@ -39,7 +33,7 @@ public class BasePresenter<V extends MvpView> implements MvpPresenter<V> {
     @Override
     public void onDetach() {
         //解除订阅
-        mCompositeSubscription.unsubscribe();
+        mCompositeDisposable.dispose();
         mMvpView = null;
     }
 
@@ -55,8 +49,8 @@ public class BasePresenter<V extends MvpView> implements MvpPresenter<V> {
         return mDataManager;
     }
 
-    public CompositeSubscription getCompositeSubscription() {
-        return mCompositeSubscription;
+    public CompositeDisposable getCompositeDisposable() {
+        return mCompositeDisposable;
     }
 
     @Override

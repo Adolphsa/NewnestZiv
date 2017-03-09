@@ -26,7 +26,7 @@ import com.zividig.newnestziv.ui.main.MainPresenter;
 
 import dagger.Module;
 import dagger.Provides;
-import rx.subscriptions.CompositeSubscription;
+import io.reactivex.disposables.CompositeDisposable;
 
 /**
  * Created by adolph
@@ -54,8 +54,8 @@ public class ActivityModule {
     }
 
     @Provides
-    CompositeSubscription provideCompositeSubscription() {
-        return new CompositeSubscription();
+    CompositeDisposable provideCompositeDisposable() {
+        return new CompositeDisposable();
     }
 
     @Provides

@@ -18,12 +18,12 @@ import java.util.Map;
 
 import javax.inject.Inject;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.functions.Action;
+import io.reactivex.functions.Consumer;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
-import rx.Observer;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
-import rx.subscriptions.CompositeSubscription;
 import timber.log.Timber;
 
 /**
@@ -35,8 +35,8 @@ public class LoginPresenter <V extends LoginMvpView> extends BasePresenter<V> im
 
 
     @Inject
-    public LoginPresenter(DataManager dataManager, CompositeSubscription compositeSubscription) {
-        super(dataManager, compositeSubscription);
+    public LoginPresenter(DataManager dataManager, CompositeDisposable compositeDisposable) {
+        super(dataManager, compositeDisposable);
     }
 
     private String token;
@@ -96,31 +96,29 @@ public class LoginPresenter <V extends LoginMvpView> extends BasePresenter<V> im
         RequestBody jsonBody =RequestBody.create(MediaType.parse("application/json; charset=utf-8"),loginBody);
 
         //获取登录信息
-        getCompositeSubscription().add(getDataManager()
+        getCompositeDisposable().add(getDataManager()
                 .doLoginCall(options,jsonBody)
-                .subscribeOn(Schedulers.io())
+                .subscribeOn(io.reactivex.schedulers.Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<LoginResponse>() {
-                    @Override
-                    public void onCompleted() {}
-
-                    @Override
-                    public void onError(Throwable e) {}
-
-                    @Override
-                    public void onNext(LoginResponse loginResponse) {
-                        Timber.d("loginResponse---" + loginResponse.toString());
-                        if (!isViewAttached()){
-                            return;
-                        }
-                        token = loginResponse.getToken();
-                        getDeviceList(user,token);
-
-                        getMvpView().hideLoading();
-                        getMvpView().openMainActivity();
-                    }
-                })
-        );
+                .subscribe(new Consumer<LoginResponse>() {
+                               @Override
+                               public void accept(LoginResponse loginResponse) throws Exception {
+                                   Timber.d(loginResponse.toString());
+                                   token = loginResponse.getToken();
+                               }
+                           },
+                            new Consumer<Throwable>() {
+                                @Override
+                                public void accept(Throwable throwable) throws Exception {
+                                    Timber.d(throwable.getMessage());
+                                }
+                            },
+                            new Action() {
+                                @Override
+                                public void run() throws Exception {
+                                    getDeviceList(user,token);
+                                }
+                            }));
     }
 
 
@@ -150,24 +148,14 @@ public class LoginPresenter <V extends LoginMvpView> extends BasePresenter<V> im
         RequestBody jsonBody =RequestBody.create(MediaType.parse("application/json; charset=utf-8"),stringDeviceListBody);
 
         //获取设备列表
-        getCompositeSubscription().add(getDataManager()
+        getCompositeDisposable().add(getDataManager()
                 .doGetDeviceList(options,jsonBody)
-                .subscribeOn(Schedulers.io())
+                .subscribeOn(io.reactivex.schedulers.Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<DeviceListResponse>() {
+                .subscribe(new Consumer<DeviceListResponse>() {
                     @Override
-                    public void onCompleted() {
-
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-
-                    }
-
-                    @Override
-                    public void onNext(DeviceListResponse deviceListResponse) {
-                        Timber.d("deviceListResponse---" + deviceListResponse.toString());
+                    public void accept(DeviceListResponse deviceListResponse) throws Exception {
+                        Timber.d(deviceListResponse.toString());
                     }
                 })
         );

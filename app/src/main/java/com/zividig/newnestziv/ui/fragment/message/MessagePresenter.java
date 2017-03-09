@@ -5,7 +5,7 @@ import com.zividig.newnestziv.ui.base.BasePresenter;
 
 import javax.inject.Inject;
 
-import rx.subscriptions.CompositeSubscription;
+import io.reactivex.disposables.CompositeDisposable;
 
 /**
  * Created by adolph
@@ -16,7 +16,7 @@ public class MessagePresenter<V extends MessageMvpView> extends BasePresenter<V>
         implements MessageMvpPresenter<V> {
 
     @Inject
-    public MessagePresenter(DataManager dataManager, CompositeSubscription compositeSubscription) {
-        super(dataManager, compositeSubscription);
+    public MessagePresenter(DataManager dataManager, CompositeDisposable compositeDisposable) {
+        super(dataManager, compositeDisposable);
     }
 }

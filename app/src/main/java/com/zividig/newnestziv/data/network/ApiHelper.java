@@ -5,8 +5,8 @@ import com.zividig.newnestziv.data.network.model.LoginResponse;
 
 import java.util.Map;
 
+import io.reactivex.Observable;
 import okhttp3.RequestBody;
-import rx.Observable;
 
 /**
  * Created by adolph

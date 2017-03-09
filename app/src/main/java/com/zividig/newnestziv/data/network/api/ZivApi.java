@@ -10,7 +10,7 @@ import retrofit2.http.Body;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import retrofit2.http.QueryMap;
-import rx.Observable;
+import io.reactivex.Observable;
 
 /**
  * Created by adolph

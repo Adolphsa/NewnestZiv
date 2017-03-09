@@ -6,4 +6,16 @@ package com.zividig.newnestziv.data.prefs;
  */
 
 public interface PreferencesHelper {
+
+    String getAccessToken();
+
+    void setAccessToken(String accessToken);
+
+    boolean getSaveUser();
+
+    void setSaveUser(boolean saveUser);
+
+    boolean getSavePassword();
+
+    void setSavePassword(boolean savePassword);
 }

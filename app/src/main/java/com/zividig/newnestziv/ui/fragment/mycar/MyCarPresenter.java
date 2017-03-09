@@ -5,7 +5,7 @@ import com.zividig.newnestziv.ui.base.BasePresenter;
 
 import javax.inject.Inject;
 
-import rx.subscriptions.CompositeSubscription;
+import io.reactivex.disposables.CompositeDisposable;
 
 /**
  * Created by adolph
@@ -16,7 +16,7 @@ public class MyCarPresenter <V extends MyCarMvpView> extends BasePresenter<V>
         implements MyCarMvpPresenter<V> {
 
     @Inject
-    public MyCarPresenter(DataManager dataManager, CompositeSubscription compositeSubscription) {
-        super(dataManager, compositeSubscription);
+    public MyCarPresenter(DataManager dataManager, CompositeDisposable compositeDisposable) {
+        super(dataManager, compositeDisposable);
     }
 }

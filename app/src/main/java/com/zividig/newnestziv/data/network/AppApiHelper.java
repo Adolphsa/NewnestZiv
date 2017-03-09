@@ -1,6 +1,7 @@
 package com.zividig.newnestziv.data.network;
 
 
+import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import com.zividig.newnestziv.ZivApp;
 import com.zividig.newnestziv.data.network.api.ZivApi;
 import com.zividig.newnestziv.data.network.model.DeviceListResponse;
@@ -14,15 +15,14 @@ import java.util.Map;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import io.reactivex.Observable;
 import okhttp3.Cache;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
-import rx.Observable;
 
 /**
  * Created by adolph
@@ -89,7 +89,7 @@ public class AppApiHelper implements ApiHelper{
                 if (mZivApi == null) {
                     mZivApi = new Retrofit.Builder()
                             .baseUrl(BASE_URL)
-                            .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                             .client(client)
                             .addConverterFactory(GsonConverterFactory.create())
                             .build().create(ZivApi.class);

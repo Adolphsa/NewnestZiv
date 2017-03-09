@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.EditText;
 
 import com.zividig.newnestziv.R;
@@ -33,6 +34,12 @@ public class LoginActivity extends BaseActivity implements LoginMvpView{
 
     @BindView(R.id.login_et_pwd)
     EditText mLoginPassword;
+
+    @BindView(R.id.login_cb_save_user)
+    CheckBox mSaveUser;
+
+    @BindView(R.id.login_cb_save_password)
+    CheckBox mSavePassword;
 
     public static Intent getStartIntent(Context context) {
         Intent intent = new Intent(context, LoginActivity.class);
