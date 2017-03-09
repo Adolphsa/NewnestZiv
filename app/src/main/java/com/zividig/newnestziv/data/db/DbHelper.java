@@ -2,7 +2,7 @@ package com.zividig.newnestziv.data.db;
 
 import com.zividig.newnestziv.data.db.model.Users;
 
-import io.reactivex.Observable;
+import java.util.List;
 
 /**
  * Created by adolph
@@ -11,5 +11,9 @@ import io.reactivex.Observable;
 
 public interface DbHelper {
 
-    Observable<Long> insertUser(final Users user);
+    Long insertUser(final Users user);
+
+    Users queryUser(final String user);
+
+    List<Users> getAllUsers();
 }

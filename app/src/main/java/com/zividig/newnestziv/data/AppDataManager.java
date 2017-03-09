@@ -10,6 +10,7 @@ import com.zividig.newnestziv.data.network.model.LoginResponse;
 import com.zividig.newnestziv.data.prefs.PreferencesHelper;
 import com.zividig.newnestziv.di.ApplicationContext;
 
+import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
@@ -57,8 +58,18 @@ public class AppDataManager implements DataManager{
 
     //-----------------------DbHelper-----------------------------
     @Override
-    public io.reactivex.Observable<Long> insertUser(Users user) {
+    public Long insertUser(Users user) {
         return mDbHelper.insertUser(user);
+    }
+
+    @Override
+    public Users queryUser(String user) {
+        return mDbHelper.queryUser(user);
+    }
+
+    @Override
+    public List<Users> getAllUsers() {
+        return mDbHelper.getAllUsers();
     }
 
 
@@ -71,6 +82,26 @@ public class AppDataManager implements DataManager{
     @Override
     public void setAccessToken(String accessToken) {
         mPreferencesHelper.setAccessToken(accessToken);
+    }
+
+    @Override
+    public String getUser() {
+        return mPreferencesHelper.getUser();
+    }
+
+    @Override
+    public void setUser(String user) {
+        mPreferencesHelper.setUser(user);
+    }
+
+    @Override
+    public String getPassword() {
+        return mPreferencesHelper.getPassword();
+    }
+
+    @Override
+    public void setPassword(String password) {
+        mPreferencesHelper.setPassword(password);
     }
 
     @Override
@@ -91,5 +122,15 @@ public class AppDataManager implements DataManager{
     @Override
     public void setSavePassword(boolean savePassword) {
         mPreferencesHelper.setSavePassword(savePassword);
+    }
+
+    @Override
+    public String getAlarmStateSwitch() {
+        return mPreferencesHelper.getAlarmStateSwitch();
+    }
+
+    @Override
+    public void setAlarmStateSwitch(String alarmStateSwitch) {
+        mPreferencesHelper.setAlarmStateSwitch(alarmStateSwitch);
     }
 }

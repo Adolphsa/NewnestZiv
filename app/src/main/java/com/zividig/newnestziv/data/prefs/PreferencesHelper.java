@@ -11,6 +11,14 @@ public interface PreferencesHelper {
 
     void setAccessToken(String accessToken);
 
+    String getUser();
+
+    void setUser(String user);
+
+    String getPassword();
+
+    void setPassword(String password);
+
     boolean getSaveUser();
 
     void setSaveUser(boolean saveUser);
@@ -18,4 +26,8 @@ public interface PreferencesHelper {
     boolean getSavePassword();
 
     void setSavePassword(boolean savePassword);
+
+    String getAlarmStateSwitch();
+
+    void setAlarmStateSwitch(String alarmStateSwitch);
 }

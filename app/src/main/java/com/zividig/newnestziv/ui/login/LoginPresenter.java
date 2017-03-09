@@ -2,6 +2,7 @@ package com.zividig.newnestziv.ui.login;
 
 import com.zividig.newnestziv.R;
 import com.zividig.newnestziv.data.DataManager;
+import com.zividig.newnestziv.data.db.model.Users;
 import com.zividig.newnestziv.data.network.model.DeviceListBody;
 import com.zividig.newnestziv.data.network.model.DeviceListResponse;
 import com.zividig.newnestziv.data.network.model.LoginBody;
@@ -14,6 +15,7 @@ import com.zividig.newnestziv.utils.SignatureUtils;
 import com.zividig.newnestziv.utils.UtcTimeUtils;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
@@ -43,9 +45,14 @@ public class LoginPresenter <V extends LoginMvpView> extends BasePresenter<V> im
     private String userTest;
 
     @Override
-    public void onLoginClick(String user, String password) {
+    public Users getUsers() {
 
-//        getMvpView().openMainActivity();
+        String user = getDataManager().getUser();
+        return getDataManager().queryUser(user);
+    }
+
+    @Override
+    public void onLoginClick(String user, String password) {
 
         if (user == null || user.isEmpty()){
             getMvpView().onError(R.string.login_user_not_null);
@@ -63,12 +70,48 @@ public class LoginPresenter <V extends LoginMvpView> extends BasePresenter<V> im
 
     }
 
+    @Override
+    public void setCheckSaveUser(boolean checkSaveUser) {
+        getDataManager().setSaveUser(checkSaveUser);
+    }
+
+    @Override
+    public void setCheckSavePassword(boolean checkSavePassword) {
+        getDataManager().setSavePassword(checkSavePassword);
+    }
+
+    @Override
+    public boolean getCheckSaveUser() {
+        return getDataManager().getSaveUser();
+    }
+
+    @Override
+    public boolean getCheckSavePassword() {
+        return getDataManager().getSavePassword();
+    }
+
+    @Override
+    public String getUser() {
+        return getDataManager().getUser();
+    }
+
+    @Override
+    public String getPassword() {
+        return getDataManager().getPassword();
+    }
+
+    @Override
+    public List<Users> getUsersList() {
+        return getDataManager().getAllUsers();
+    }
+
+
     /**
      * 登录
      * @param user  用户名
      * @param password  密码
      */
-    private void doLogin(final String user, String password){
+    private void doLogin(final String user, final String password){
 
         //计算signature
         String timestamp = UtcTimeUtils.getTimestamp();
@@ -104,7 +147,28 @@ public class LoginPresenter <V extends LoginMvpView> extends BasePresenter<V> im
                                @Override
                                public void accept(LoginResponse loginResponse) throws Exception {
                                    Timber.d(loginResponse.toString());
-                                   token = loginResponse.getToken();
+                                   if (200 == loginResponse.getStatus()){
+
+                                       //保存token
+                                       String token = loginResponse.getToken();
+                                       getDataManager().setAccessToken(token);
+
+                                       //保存用户名和密码
+                                       getDataManager().setUser(user);
+                                       getDataManager().setPassword(password);
+
+                                       //保存震动免打扰开关状态
+                                       String alarmStateSwitch = loginResponse.getAlarmStatus();
+                                       getDataManager().setAlarmStateSwitch(alarmStateSwitch);
+
+                                       //存放用户和密码到数据库
+                                       Users users = new Users(null,user,password);
+                                       getDataManager().insertUser(users);
+
+                                        getMvpView().hideLoading();
+                                        getMvpView().openMainActivity();
+                                   }
+
                                }
                            },
                             new Consumer<Throwable>() {
@@ -116,7 +180,8 @@ public class LoginPresenter <V extends LoginMvpView> extends BasePresenter<V> im
                             new Action() {
                                 @Override
                                 public void run() throws Exception {
-                                    getDeviceList(user,token);
+                                    String currentToken =  getDataManager().getAccessToken();
+                                    getDeviceList(user,currentToken);
                                 }
                             }));
     }

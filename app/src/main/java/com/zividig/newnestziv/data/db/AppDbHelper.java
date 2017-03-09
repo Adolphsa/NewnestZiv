@@ -4,13 +4,12 @@ package com.zividig.newnestziv.data.db;
 import com.zividig.newnestziv.data.db.model.DaoMaster;
 import com.zividig.newnestziv.data.db.model.DaoSession;
 import com.zividig.newnestziv.data.db.model.Users;
+import com.zividig.newnestziv.data.db.model.UsersDao;
 
-import java.util.concurrent.Callable;
+import java.util.List;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
-
-import io.reactivex.Observable;
 
 /**
  * Created by adolph
@@ -29,12 +28,20 @@ public class AppDbHelper implements DbHelper{
 
 
     @Override
-    public Observable<Long> insertUser(final Users user) {
-        return Observable.fromCallable(new Callable<Long>() {
-            @Override
-            public Long call() throws Exception {
-                return mDaoSession.getUsersDao().insert(user);
-            }
-        });
+    public Long insertUser(final Users user) {
+        return mDaoSession.getUsersDao().insert(user);
+    }
+
+    @Override
+    public Users queryUser(final String user) {
+                return mDaoSession.getUsersDao().queryBuilder()
+                        .where(UsersDao.Properties.Username.eq(user))
+                        .build().unique();
+
+    }
+
+    @Override
+    public List<Users> getAllUsers() {
+        return mDaoSession.getUsersDao().loadAll();
     }
 }
