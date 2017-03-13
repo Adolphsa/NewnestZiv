@@ -3,9 +3,11 @@ package com.zividig.newnestziv.data;
 import android.content.Context;
 
 import com.zividig.newnestziv.data.db.DbHelper;
+import com.zividig.newnestziv.data.db.model.DeviceInfo;
 import com.zividig.newnestziv.data.db.model.Users;
 import com.zividig.newnestziv.data.network.ApiHelper;
 import com.zividig.newnestziv.data.network.model.DeviceListResponse;
+import com.zividig.newnestziv.data.network.model.DeviceStateResponse;
 import com.zividig.newnestziv.data.network.model.LoginResponse;
 import com.zividig.newnestziv.data.prefs.PreferencesHelper;
 import com.zividig.newnestziv.di.ApplicationContext;
@@ -54,6 +56,10 @@ public class AppDataManager implements DataManager{
         return mApiHelper.doGetDeviceList(options,body);
     }
 
+    @Override
+    public Observable<DeviceStateResponse> doGetDeviceState(Map<String, String> options, RequestBody body) {
+        return mApiHelper.doGetDeviceState(options,body);
+    }
 
 
     //-----------------------DbHelper-----------------------------
@@ -68,8 +74,36 @@ public class AppDataManager implements DataManager{
     }
 
     @Override
+    public void updateUser(Users user) {mDbHelper.updateUser(user);}
+
+    @Override
     public List<Users> getAllUsers() {
         return mDbHelper.getAllUsers();
+    }
+
+    @Override
+    public Long insertDevice(DeviceInfo deviceInfo) {
+        return mDbHelper.insertDevice(deviceInfo);
+    }
+
+    @Override
+    public DeviceInfo queryDevice(String deviceId) {
+        return mDbHelper.queryDevice(deviceId);
+    }
+
+    @Override
+    public void updateDevice(DeviceInfo deviceInfo) {
+        mDbHelper.updateDevice(deviceInfo);
+    }
+
+    @Override
+    public void deleteDevice(DeviceInfo deviceInfo) {
+        mDbHelper.deleteDevice(deviceInfo);
+    }
+
+    @Override
+    public List<DeviceInfo> getAllDevice(String user) {
+        return mDbHelper.getAllDevice(user);
     }
 
 
@@ -133,4 +167,16 @@ public class AppDataManager implements DataManager{
     public void setAlarmStateSwitch(String alarmStateSwitch) {
         mPreferencesHelper.setAlarmStateSwitch(alarmStateSwitch);
     }
+
+    @Override
+    public String getDeviceId() {
+        return mPreferencesHelper.getDeviceId();
+    }
+
+    @Override
+    public void setDeviceId(String deviceId) {
+        mPreferencesHelper.setDeviceId(deviceId);
+    }
+
+
 }

@@ -22,4 +22,6 @@
     <!--MyCarFragment-->
     <string name="my_car_device_state">设备状态 : </string>
     <string name="my_car_state">正在查询</string>
+    <string name="my_car_title">设备ID ：*</string>
+    <string name="my_car_id_is_null">设备状态 : ID为空</string>
 </resources>

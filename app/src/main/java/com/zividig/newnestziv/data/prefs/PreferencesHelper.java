@@ -30,4 +30,8 @@ public interface PreferencesHelper {
     String getAlarmStateSwitch();
 
     void setAlarmStateSwitch(String alarmStateSwitch);
+
+    String getDeviceId();
+
+    void setDeviceId(String deviceId);
 }

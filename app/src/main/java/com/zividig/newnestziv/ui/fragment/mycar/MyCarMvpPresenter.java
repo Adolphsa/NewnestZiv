@@ -9,4 +9,10 @@ import com.zividig.newnestziv.ui.base.MvpPresenter;
  */
 @PerActivity
 public interface MyCarMvpPresenter<V extends MyCarMvpView> extends MvpPresenter<V> {
+
+    void setDeviceId(String deviceId);
+
+    String getDeviceId();
+
+    void getMyCarDeviceState(String deviceID);
 }

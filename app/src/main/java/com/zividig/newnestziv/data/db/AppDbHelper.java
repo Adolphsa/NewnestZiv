@@ -3,6 +3,8 @@ package com.zividig.newnestziv.data.db;
 
 import com.zividig.newnestziv.data.db.model.DaoMaster;
 import com.zividig.newnestziv.data.db.model.DaoSession;
+import com.zividig.newnestziv.data.db.model.DeviceInfo;
+import com.zividig.newnestziv.data.db.model.DeviceInfoDao;
 import com.zividig.newnestziv.data.db.model.Users;
 import com.zividig.newnestziv.data.db.model.UsersDao;
 
@@ -41,7 +43,44 @@ public class AppDbHelper implements DbHelper{
     }
 
     @Override
+    public void updateUser(Users user) {
+        mDaoSession.getUsersDao().update(user);
+    }
+
+    @Override
     public List<Users> getAllUsers() {
         return mDaoSession.getUsersDao().loadAll();
     }
+
+    @Override
+    public Long insertDevice(DeviceInfo deviceInfo) {
+        return mDaoSession.getDeviceInfoDao().insert(deviceInfo);
+    }
+
+    @Override
+    public DeviceInfo queryDevice(String deviceId) {
+        return mDaoSession.getDeviceInfoDao().queryBuilder()
+                .where(DeviceInfoDao.Properties.DeviceId.eq(deviceId))
+                .build().unique();
+    }
+
+    @Override
+    public void updateDevice(DeviceInfo deviceInfo) {
+        mDaoSession.getDeviceInfoDao().update(deviceInfo);
+    }
+
+    @Override
+    public void deleteDevice(DeviceInfo deviceInfo) {
+        mDaoSession.getDeviceInfoDao().delete(deviceInfo);
+    }
+
+    @Override
+    public List<DeviceInfo> getAllDevice(String user) {
+        return mDaoSession.getDeviceInfoDao().queryBuilder()
+                .where(DeviceInfoDao.Properties.UserName.eq(user))
+                .build().list();
+
+    }
+
+
 }

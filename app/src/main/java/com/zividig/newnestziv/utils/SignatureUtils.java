@@ -15,7 +15,7 @@ public class SignatureUtils {
     public static final String SIGNATURE_NONCESTTR = "noncestr";
     public static final String SIGNATURE_STRING = "signature";
     public static final String SIGNATURE_TOKEN = "token";
-    public static String token;
+
 
     public static String getSinnature(String... args){
 

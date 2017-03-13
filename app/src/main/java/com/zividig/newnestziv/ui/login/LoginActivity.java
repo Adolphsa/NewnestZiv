@@ -109,6 +109,11 @@ public class LoginActivity extends BaseActivity implements LoginMvpView {
         finish();
     }
 
+    @Override
+    public String getUserName() {
+        return mLoginUser.getText().toString().trim();
+    }
+
     //初始化下拉列表
     private void initDropEditText(){
 
@@ -159,6 +164,8 @@ public class LoginActivity extends BaseActivity implements LoginMvpView {
             mCheckBoxPassword.setChecked(false);
         }
     }
+
+
 
     @Override
     protected void onDestroy() {

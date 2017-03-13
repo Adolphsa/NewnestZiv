@@ -5,6 +5,7 @@ import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import com.zividig.newnestziv.ZivApp;
 import com.zividig.newnestziv.data.network.api.ZivApi;
 import com.zividig.newnestziv.data.network.model.DeviceListResponse;
+import com.zividig.newnestziv.data.network.model.DeviceStateResponse;
 import com.zividig.newnestziv.data.network.model.LoginResponse;
 import com.zividig.newnestziv.utils.NetworkUtil;
 
@@ -110,5 +111,11 @@ public class AppApiHelper implements ApiHelper{
     public Observable<DeviceListResponse> doGetDeviceList(Map<String, String> options, RequestBody body) {
         return getZivApiService().getDeviceListInfo(options,body);
     }
+
+    @Override
+    public Observable<DeviceStateResponse> doGetDeviceState(Map<String, String> options, RequestBody body) {
+        return getZivApiService().getDeviceStateInfo(options,body);
+    }
+
 
 }

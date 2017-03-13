@@ -85,6 +85,7 @@ public abstract class BaseActivity extends AppCompatActivity
         Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content),
                 message, Snackbar.LENGTH_SHORT);
         View sbView = snackbar.getView();
+        sbView.setBackgroundResource(R.color.colorPrimary);
         TextView textView = (TextView) sbView
                 .findViewById(android.support.design.R.id.snackbar_text);
         textView.setTextColor(ContextCompat.getColor(this, R.color.white));

@@ -11,7 +11,7 @@ import org.greenrobot.greendao.annotation.Generated;
  * on 2017-03-08.
  */
 
-@Entity
+@Entity(nameInDb = "users")
 public class Users {
 
     @Id(autoincrement = true)

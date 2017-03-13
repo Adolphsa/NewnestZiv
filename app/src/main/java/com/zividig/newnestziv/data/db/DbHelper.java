@@ -1,5 +1,6 @@
 package com.zividig.newnestziv.data.db;
 
+import com.zividig.newnestziv.data.db.model.DeviceInfo;
 import com.zividig.newnestziv.data.db.model.Users;
 
 import java.util.List;
@@ -15,5 +16,18 @@ public interface DbHelper {
 
     Users queryUser(final String user);
 
+    void updateUser(final Users user);
+
     List<Users> getAllUsers();
+
+    Long insertDevice(DeviceInfo deviceInfo);
+
+    DeviceInfo queryDevice(String deviceId);
+
+    void updateDevice(DeviceInfo deviceInfo);
+
+    void deleteDevice(DeviceInfo deviceInfo);
+
+    List<DeviceInfo> getAllDevice(String user);
+
 }

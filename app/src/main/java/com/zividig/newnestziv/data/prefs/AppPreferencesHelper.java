@@ -23,6 +23,7 @@ public class AppPreferencesHelper implements PreferencesHelper{
     private static final String PREF_KEY_SAVE_USER = "PREF_KEY_SAVE_USER";
     private static final String PREF_KEY_SAVE_PASSWORD = "PREF_KEY_SAVE_PASSWORD";
     private static final String PREF_KEY_ALARM_STATE_SWITCH = "PREF_KEY_ALARM_STATE_SWITCH";
+    private static final String PREF_KEY_DEVICE_ID = "PREF_KEY_DEVICE_ID";
 
     private final SharedPreferences mPrefs;
 
@@ -91,4 +92,16 @@ public class AppPreferencesHelper implements PreferencesHelper{
     public void setAlarmStateSwitch(String alarmStateSwitch) {
         mPrefs.edit().putString(PREF_KEY_ALARM_STATE_SWITCH,alarmStateSwitch).apply();
     }
+
+    @Override
+    public String getDeviceId() {
+        return mPrefs.getString(PREF_KEY_DEVICE_ID,null);
+    }
+
+    @Override
+    public void setDeviceId(String deviceId) {
+        mPrefs.edit().putString(PREF_KEY_DEVICE_ID,deviceId).apply();
+    }
+
+
 }
