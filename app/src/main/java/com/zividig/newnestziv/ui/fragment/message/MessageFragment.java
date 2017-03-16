@@ -2,13 +2,18 @@ package com.zividig.newnestziv.ui.fragment.message;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.zividig.newnestziv.R;
 import com.zividig.newnestziv.ui.base.BaseFragment;
+
+import javax.inject.Inject;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * Created by adolph
@@ -16,6 +21,12 @@ import com.zividig.newnestziv.ui.base.BaseFragment;
  */
 
 public class MessageFragment extends BaseFragment implements MessageMvpView {
+
+    @Inject
+    MessageMvpPresenter<MessageMvpView> mPresenter;
+
+    @BindView(R.id.normal_tv_title)
+    TextView mTitle;
 
     public static MessageFragment newInstance() {
         Bundle args = new Bundle();
@@ -27,12 +38,18 @@ public class MessageFragment extends BaseFragment implements MessageMvpView {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        TextView textView = new TextView(getContext());
-        textView.setTextSize(30);
-        textView.setGravity(Gravity.CENTER);
-        textView.setText("Message");
-        textView.setBackgroundColor(0xFFececec);
-        return textView;
+
+        View view = inflater.inflate(R.layout.fragment_message,null);
+
+        getActivityComponent().inject(this);
+
+        setUnBinder(ButterKnife.bind(this, view));
+
+        mPresenter.onAttach(this);
+
+        initView();
+
+        return view;
     }
 
     @Override
@@ -47,6 +64,6 @@ public class MessageFragment extends BaseFragment implements MessageMvpView {
 
     @Override
     public void initView() {
-
+        mTitle.setText(getString(R.string.message_title));
     }
 }

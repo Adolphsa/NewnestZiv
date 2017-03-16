@@ -105,16 +105,16 @@ public class MyCarPresenter<V extends MyCarMvpView> extends BasePresenter<V>
     private void changeWorkMode(String mode){
         String devid  =getDeviceId();
         if (TextUtils.isEmpty(devid)){
-            getMvpView().setDeviceStateTitle("设备状态 : " + "ID为空");
+            getMvpView().setDeviceStateTitle("ID为空");
         }else{
             if (mode.equals("NORMAL")){
-                getMvpView().setDeviceStateTitle("设备状态 : " + "在线");
+                getMvpView().setDeviceStateTitle("在线");
             }else if(mode.equals("STDBY")){
-                getMvpView().setDeviceStateTitle("设备状态 : " + "休眠");
+                getMvpView().setDeviceStateTitle("休眠");
             }else if(mode.equals("OFF")){
-                getMvpView().setDeviceStateTitle("设备状态 : " + "离线");
+                getMvpView().setDeviceStateTitle("离线");
             }else if(mode.equals("BOOTING")){
-                getMvpView().setDeviceStateTitle("设备状态 : " + "启动中");
+                getMvpView().setDeviceStateTitle("启动中");
             }
         }
 

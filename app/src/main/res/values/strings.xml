@@ -23,5 +23,19 @@
     <string name="my_car_device_state">设备状态 : </string>
     <string name="my_car_state">正在查询</string>
     <string name="my_car_title">设备ID ：*</string>
-    <string name="my_car_id_is_null">设备状态 : ID为空</string>
+    <string name="my_car_id_is_null">ID为空</string>
+
+    <!--MessageFragment-->
+    <string name="message_title">信息</string>
+
+    <!--SettingFragment-->
+    <string name="setting_title">设置</string>
+
+    <!--MyFragment-->
+    <string name="my_title">我</string>
+
+    <!--SnapPicture-->
+    <string name="snap_title">图片抓拍</string>
+    <string name="snap_fail">抓图失败</string>
+
 </resources>

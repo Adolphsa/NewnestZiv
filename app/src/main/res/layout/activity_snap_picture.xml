@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+    <include layout="@layout/layout_title_normal"
+             android:id="@+id/snap_title"
+        />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+        <com.bm.library.PhotoView
+            android:id="@+id/snap_photo_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitCenter"
+            android:src="@drawable/snap_default" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:background="@android:color/transparent"
+        >
+        <Button
+            android:id="@+id/snap_bt_refresh"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/darker_gray"
+            android:drawableTop="@drawable/ic_insert_photo_cyan_500_36dp"
+            android:textSize="15sp"
+            android:background="@android:color/transparent"
+            android:padding="8dp"
+            />
+        <Button
+            android:id="@+id/snap_bt_downImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:textColor="@android:color/darker_gray"
+            android:drawableTop="@drawable/ic_cloud_download_cyan_500_36dp"
+            android:textSize="15sp"
+            android:background="@android:color/transparent"
+            android:padding="8dp"
+            />
+    </LinearLayout>
+
+</LinearLayout>

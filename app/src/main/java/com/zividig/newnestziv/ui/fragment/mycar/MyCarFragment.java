@@ -1,11 +1,13 @@
 package com.zividig.newnestziv.ui.fragment.mycar;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.TextView;
 
@@ -13,10 +15,13 @@ import com.bigkoo.convenientbanner.ConvenientBanner;
 import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
 import com.zividig.newnestziv.R;
 import com.zividig.newnestziv.data.db.model.DeviceInfo;
+import com.zividig.newnestziv.ui.snap.SnapPictureActivity;
 import com.zividig.newnestziv.ui.base.BaseFragment;
 import com.zividig.newnestziv.ui.fragment.mycar.other.GridAdapter;
 import com.zividig.newnestziv.ui.fragment.mycar.other.LocalImageHolderView;
 import com.zividig.newnestziv.utils.RxBus;
+import com.zividig.newnestziv.utils.RxBusSubscriber;
+import com.zividig.newnestziv.utils.RxSubscriptions;
 
 import java.util.ArrayList;
 
@@ -25,7 +30,6 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import rx.Subscription;
-import rx.functions.Action1;
 import timber.log.Timber;
 
 /**
@@ -47,7 +51,7 @@ public class MyCarFragment extends BaseFragment implements MyCarMvpView{
     @BindView(R.id.my_car_grid)
     GridView mGridView;
 
-    @BindView(R.id.my_car_device_state)
+    @BindView(R.id.tv_device_state)
     TextView mDeviceState;
 
     private Subscription rxSubscription;
@@ -58,6 +62,12 @@ public class MyCarFragment extends BaseFragment implements MyCarMvpView{
         MyCarFragment fragment = new MyCarFragment();
         fragment.setArguments(args);
         return fragment;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Timber.d("onCreate");
     }
 
     @Nullable
@@ -71,8 +81,10 @@ public class MyCarFragment extends BaseFragment implements MyCarMvpView{
 
         mPresenter.onAttach(this);
 
-        initView();
         Timber.d("哈哈哈");
+        initView();
+        initAd();
+        initFunctionButton();
 
         mDevid = mPresenter.getDeviceId();
 
@@ -81,37 +93,39 @@ public class MyCarFragment extends BaseFragment implements MyCarMvpView{
 
     @Override
     public void initView() {
-        mTitle.setText("我的车");
-        mGridView.setAdapter(new GridAdapter(getContext()));
 
-        rxSubscription = RxBus.getDefault().toObservable(DeviceInfo.class)
-                    .subscribe(new Action1<DeviceInfo>() {
+        rxSubscription = RxBus.getDefault().toObservableSticky(DeviceInfo.class)
+                    .subscribe(new RxBusSubscriber<DeviceInfo>() {
                         @Override
-                        public void call(DeviceInfo deviceInfo) {
+                        protected void onEvent(DeviceInfo deviceInfo) {
                             Timber.d(deviceInfo.getDeviceId());
                             String devid = deviceInfo.getDeviceId();
                             String subDevid = devid.substring(devid.length()-4,devid.length());
                             String temp = getString(R.string.my_car_title);
                             mTitle.setText(temp + subDevid);
-//                            mPresenter.setDeviceId(devid);
                             mPresenter.getMyCarDeviceState(devid);
+                            Timber.d("订阅");
                             Timber.d(deviceInfo.getUserName());
                         }
-                    }, new Action1<Throwable>() {
-                        @Override
-                        public void call(Throwable throwable) {
 
+                        @Override
+                        public void onError(Throwable e) {
+                            super.onError(e);
                         }
                     });
 
+        RxSubscriptions.add(rxSubscription);
+
         if (TextUtils.isEmpty((mDevid))){
+            mTitle.setText("我的车");
             mDeviceState.setText(getString(R.string.my_car_id_is_null));
-            Timber.d("啦啦啦1");
         }else {
             mPresenter.getMyCarDeviceState(mDevid);
+            String subDevid = mDevid.substring(mDevid.length()-4,mDevid.length());
+            String temp = getString(R.string.my_car_title);
+            mTitle.setText(temp + subDevid);
         }
 
-        initAd();
     }
 
     /**
@@ -135,6 +149,21 @@ public class MyCarFragment extends BaseFragment implements MyCarMvpView{
                 .setPageIndicatorAlign(ConvenientBanner.PageIndicatorAlign.ALIGN_PARENT_RIGHT);
     }
 
+    private void initFunctionButton(){
+        mGridView.setAdapter(new GridAdapter(getContext()));
+        mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                switch (position){
+                    case 0:
+                        Timber.d("图片抓拍");
+                        startActivity(new Intent(getContext(), SnapPictureActivity.class));
+                        break;
+                }
+            }
+        });
+    }
+
     @Override
     public void onResume() {
         super.onResume();
@@ -147,6 +176,12 @@ public class MyCarFragment extends BaseFragment implements MyCarMvpView{
     public void onPause() {
         super.onPause();
         mConvenientBanner.stopTurning();
+    }
+
+    @Override
+    public void onDestroyView() {
+        mPresenter.onDetach();
+        super.onDestroyView();
     }
 
     @Override
@@ -164,9 +199,7 @@ public class MyCarFragment extends BaseFragment implements MyCarMvpView{
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if(!rxSubscription.isUnsubscribed()) {
-            rxSubscription.unsubscribe();
-        }
+        RxSubscriptions.remove(rxSubscription);
     }
 
     @Override

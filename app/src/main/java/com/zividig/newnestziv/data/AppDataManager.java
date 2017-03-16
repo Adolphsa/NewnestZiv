@@ -9,6 +9,7 @@ import com.zividig.newnestziv.data.network.ApiHelper;
 import com.zividig.newnestziv.data.network.model.DeviceListResponse;
 import com.zividig.newnestziv.data.network.model.DeviceStateResponse;
 import com.zividig.newnestziv.data.network.model.LoginResponse;
+import com.zividig.newnestziv.data.network.model.SnapResponse;
 import com.zividig.newnestziv.data.prefs.PreferencesHelper;
 import com.zividig.newnestziv.di.ApplicationContext;
 
@@ -20,6 +21,7 @@ import javax.inject.Singleton;
 
 import okhttp3.RequestBody;
 import io.reactivex.Observable;
+import okhttp3.ResponseBody;
 
 /**
  * Created by adolph
@@ -59,6 +61,16 @@ public class AppDataManager implements DataManager{
     @Override
     public Observable<DeviceStateResponse> doGetDeviceState(Map<String, String> options, RequestBody body) {
         return mApiHelper.doGetDeviceState(options,body);
+    }
+
+    @Override
+    public Observable<SnapResponse> doGetImageUrl(Map<String, String> options, RequestBody body) {
+        return mApiHelper.doGetImageUrl(options,body);
+    }
+
+    @Override
+    public Observable<ResponseBody> doDownloadImage(String imageUrl) {
+        return mApiHelper.doDownloadImage(imageUrl);
     }
 
 

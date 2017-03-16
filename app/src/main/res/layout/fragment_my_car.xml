@@ -7,16 +7,7 @@
     <include layout="@layout/layout_title"
         android:id="@+id/my_car_title"
         />
-    <TextView
-        android:id="@+id/my_car_device_state"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/my_car_device_state"
-        android:textColor="@color/white"
-        android:textSize="15sp"
-        android:padding="3dp"
-        android:layout_marginTop="10dp"
-        />
+
     <com.bigkoo.convenientbanner.ConvenientBanner
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/my_car_convenientBanner"
@@ -36,6 +27,4 @@
         android:verticalSpacing="2dp"
         android:layout_below="@id/my_car_convenientBanner"
         />
-
-
 </RelativeLayout>

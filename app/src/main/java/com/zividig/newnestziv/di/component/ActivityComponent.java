@@ -8,6 +8,7 @@ import com.zividig.newnestziv.ui.fragment.mycar.MyCarFragment;
 import com.zividig.newnestziv.ui.fragment.setting.SettingFragment;
 import com.zividig.newnestziv.ui.login.LoginActivity;
 import com.zividig.newnestziv.ui.main.MainActivity;
+import com.zividig.newnestziv.ui.snap.SnapPictureActivity;
 
 import dagger.Component;
 
@@ -31,4 +32,6 @@ public interface ActivityComponent {
     void inject(SettingFragment fragment);
 
     void inject(MyFragment fragment);
+
+    void inject(SnapPictureActivity activity);
 }

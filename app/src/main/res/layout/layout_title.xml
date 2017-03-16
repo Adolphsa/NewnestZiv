@@ -7,25 +7,23 @@
 
 
     <TextView
-        android:id="@+id/tv_device_states"
+        android:id="@+id/tv_device_states_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/my_car_device_state"
         android:textColor="@android:color/white"
         android:layout_centerVertical="true"
         android:textSize="14sp"
-        android:visibility="gone"
         />
     <TextView
         android:id="@+id/tv_device_state"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/tv_device_states"
+        android:layout_toRightOf="@+id/tv_device_states_text"
         android:text="@string/my_car_state"
         android:textColor="@android:color/white"
         android:layout_centerVertical="true"
         android:textSize="14sp"
-        android:visibility="gone"
         />
     <TextView
         android:id="@+id/tv_title"

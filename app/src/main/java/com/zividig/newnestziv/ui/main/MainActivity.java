@@ -9,13 +9,19 @@ import com.zividig.newnestziv.ui.base.BaseActivity;
 import com.zividig.newnestziv.ui.customview.CustomsViewPager;
 import com.zividig.newnestziv.ui.fragment.fragmentAdapter;
 
+import javax.inject.Inject;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import me.majiajie.pagerbottomtabstrip.NavigationController;
 import me.majiajie.pagerbottomtabstrip.PageBottomTabLayout;
+import me.majiajie.pagerbottomtabstrip.listener.OnTabItemSelectedListener;
+import timber.log.Timber;
 
 public class MainActivity extends BaseActivity implements MainMvpView {
 
+    @Inject
+    MainMvpPresenter<MainMvpView> mPresenter;
 
     @BindView(R.id.main_custom_view_pager)
     CustomsViewPager mViewPager;
@@ -34,10 +40,11 @@ public class MainActivity extends BaseActivity implements MainMvpView {
         setContentView(R.layout.activity_main);
         setStatusBar();
 
-
         getActivityComponent().inject(this);
 
         setUnBinder(ButterKnife.bind(this));
+
+        mPresenter.onAttach(this);
 
         init();
     }
@@ -45,10 +52,10 @@ public class MainActivity extends BaseActivity implements MainMvpView {
     private void init(){
 
         NavigationController navigationController = mTabLayoutab.material()
-                .addItem(android.R.drawable.ic_menu_camera, "相机")
-                .addItem(android.R.drawable.ic_menu_compass, "位置")
-                .addItem(android.R.drawable.ic_menu_search, "搜索")
-                .addItem(android.R.drawable.ic_menu_help, "帮助")
+                .addItem(android.R.drawable.ic_menu_camera, "我的车")
+                .addItem(android.R.drawable.ic_menu_compass, "消息")
+                .addItem(android.R.drawable.ic_menu_search, "设置")
+                .addItem(android.R.drawable.ic_menu_help, "我")
                 .build();
 
         mViewPager.setAdapter(new fragmentAdapter(getSupportFragmentManager(),
@@ -56,6 +63,18 @@ public class MainActivity extends BaseActivity implements MainMvpView {
 
         //自动适配ViewPager页面切换
         mTabLayoutab.setupWithViewPager(mViewPager);
+
+        navigationController.addTabItemSelectedListener(new OnTabItemSelectedListener() {
+            @Override
+            public void onSelected(int index, int old) {
+                Timber.d("选中---" + index);
+            }
+
+            @Override
+            public void onRepeat(int index) {
+
+            }
+        });
     }
 
     @Override
@@ -76,5 +95,11 @@ public class MainActivity extends BaseActivity implements MainMvpView {
     @Override
     public boolean isNetworkConnected() {
         return false;
+    }
+
+    @Override
+    protected void onDestroy() {
+        mPresenter.onDetach();
+        super.onDestroy();
     }
 }

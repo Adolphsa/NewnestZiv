@@ -23,6 +23,9 @@ import com.zividig.newnestziv.ui.login.LoginPresenter;
 import com.zividig.newnestziv.ui.main.MainMvpPresenter;
 import com.zividig.newnestziv.ui.main.MainMvpView;
 import com.zividig.newnestziv.ui.main.MainPresenter;
+import com.zividig.newnestziv.ui.snap.SnapPictureMvpPresenter;
+import com.zividig.newnestziv.ui.snap.SnapPictureMvpView;
+import com.zividig.newnestziv.ui.snap.SnapPicturePresenter;
 
 import dagger.Module;
 import dagger.Provides;
@@ -95,6 +98,13 @@ public class ActivityModule {
     @PerActivity
     MyMvpPresenter<MyMvpView> provideMyPresenter(MyPresenter<MyMvpView>
                                                                   presenter) {
+        return presenter;
+    }
+
+    @Provides
+    @PerActivity
+    SnapPictureMvpPresenter<SnapPictureMvpView> provideSnapPicturePresenter(SnapPicturePresenter<SnapPictureMvpView>
+                                                                            presenter){
         return presenter;
     }
 }

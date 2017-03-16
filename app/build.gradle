@@ -66,6 +66,9 @@ dependencies {
     //轮播器
     compile 'com.bigkoo:convenientbanner:2.0.5'
 
+    //图片控件
+    compile 'com.bm.photoview:library:1.4.1'
+
     //butterknife
     compile 'com.jakewharton:butterknife:8.4.0'
     apt 'com.jakewharton:butterknife-compiler:8.4.0' //添加这行

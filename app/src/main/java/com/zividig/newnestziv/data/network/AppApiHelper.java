@@ -7,6 +7,7 @@ import com.zividig.newnestziv.data.network.api.ZivApi;
 import com.zividig.newnestziv.data.network.model.DeviceListResponse;
 import com.zividig.newnestziv.data.network.model.DeviceStateResponse;
 import com.zividig.newnestziv.data.network.model.LoginResponse;
+import com.zividig.newnestziv.data.network.model.SnapResponse;
 import com.zividig.newnestziv.utils.NetworkUtil;
 
 import java.io.File;
@@ -22,6 +23,7 @@ import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import okhttp3.ResponseBody;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -115,6 +117,16 @@ public class AppApiHelper implements ApiHelper{
     @Override
     public Observable<DeviceStateResponse> doGetDeviceState(Map<String, String> options, RequestBody body) {
         return getZivApiService().getDeviceStateInfo(options,body);
+    }
+
+    @Override
+    public Observable<SnapResponse> doGetImageUrl(Map<String, String> options, RequestBody body) {
+        return getZivApiService().getImageUrl(options,body);
+    }
+
+    @Override
+    public Observable<ResponseBody> doDownloadImage(String imageUrl) {
+        return getZivApiService().downLoadImage(imageUrl);
     }
 
 

@@ -203,9 +203,10 @@ public class LoginPresenter<V extends LoginMvpView> extends BasePresenter<V> imp
                 getDataManager().updateUser(dataUser);
             }
 
+            getMvpView().openMainActivity();
+
             String currentToken = loginResponse.getToken();
             getDeviceList(user, currentToken);
-            getMvpView().openMainActivity();
 
         } else if (404 == status) {
             getMvpView().onError("手机号不存在");
@@ -332,7 +333,8 @@ public class LoginPresenter<V extends LoginMvpView> extends BasePresenter<V> imp
                         //发射第0个出去
                         String defaultDevid = devinfoList.get(0).getDevid();
                         DeviceInfo defaultDeviceInfo = getDataManager().queryDevice(defaultDevid);
-                        RxBus.getDefault().post(defaultDeviceInfo);
+//                        RxBus.getDefault().post(defaultDeviceInfo);
+                        RxBus.getDefault().postSticky(defaultDeviceInfo);
                         Timber.d("---发送第0个，devid不为空");
                         getDataManager().setDeviceId(defaultDevid);
                     } else {
