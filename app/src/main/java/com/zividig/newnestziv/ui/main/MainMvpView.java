@@ -9,4 +9,5 @@ import com.zividig.newnestziv.ui.base.MvpView;
 
 public interface MainMvpView extends MvpView {
 
+   int getIndex();
 }

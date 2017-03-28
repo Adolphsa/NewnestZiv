@@ -13,12 +13,18 @@ import com.zividig.newnestziv.utils.UtcTimeUtils;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
+import io.reactivex.Observable;
+import io.reactivex.ObservableSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
+import io.reactivex.functions.Predicate;
+import io.reactivex.schedulers.Schedulers;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 import timber.log.Timber;
@@ -38,6 +44,8 @@ public class MyCarPresenter<V extends MyCarMvpView> extends BasePresenter<V>
 
     @Override
     public void getMyCarDeviceState(String deviceID) {
+
+        Timber.d("调用获取我的设备状态");
 
         String token = getDataManager().getAccessToken();
         //计算signature
@@ -77,7 +85,7 @@ public class MyCarPresenter<V extends MyCarMvpView> extends BasePresenter<V>
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(Throwable throwable) throws Exception {
-
+                        Timber.d("获取设备状态异常---" + throwable.getMessage());
                     }
                 })
         );
@@ -103,7 +111,7 @@ public class MyCarPresenter<V extends MyCarMvpView> extends BasePresenter<V>
      * @param mode 主机模式
      */
     private void changeWorkMode(String mode){
-        String devid  =getDeviceId();
+        String devid = getDeviceId();
         if (TextUtils.isEmpty(devid)){
             getMvpView().setDeviceStateTitle("ID为空");
         }else{
@@ -130,5 +138,90 @@ public class MyCarPresenter<V extends MyCarMvpView> extends BasePresenter<V>
         return getDataManager().getDeviceId();
     }
 
+    /**
+     * 配置options
+     * @return options
+     */
+    private Map<String, String> setOp(){
 
+        String token = getDataManager().getAccessToken();
+        String devid = getDataManager().getDeviceId();
+
+        //计算signature
+        String timestamp = UtcTimeUtils.getTimestamp();
+        String noncestr = CommonUtils.getRandomString(10);
+        String signature = SignatureUtils.getSinnature(timestamp,
+                noncestr,
+                SignatureUtils.APP_KEY,
+                devid,
+                token);
+
+        //配置请求头
+        Map<String, String> options = new HashMap<>();
+        options.put(SignatureUtils.SIGNATURE_APP_KEY, SignatureUtils.APP_KEY);
+        options.put(SignatureUtils.SIGNATURE_TIMESTAMP, timestamp);
+        options.put(SignatureUtils.SIGNATURE_NONCESTTR, noncestr);
+        options.put(SignatureUtils.SIGNATURE_STRING, signature);
+
+        return options;
+    }
+
+    /**
+     * 配置jsonBody
+     * @return  RequestBody
+     */
+    private RequestBody setBody(){
+
+        String token = getDataManager().getAccessToken();
+        String devid = getDataManager().getDeviceId();
+
+        //配置请求体
+        DeviceStateBody deviceStateBody = new DeviceStateBody();
+        deviceStateBody.devid = devid;
+        deviceStateBody.token = token;
+        String stringDeviceListBody = GsonUtils.GsonString(deviceStateBody);
+        RequestBody jsonBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), stringDeviceListBody);
+
+        return jsonBody;
+    }
+
+    @Override
+    public void loopGetDeviceState() {
+
+        Observable.interval(0,30, TimeUnit.SECONDS)
+                .flatMap(new Function<Long, ObservableSource<DeviceStateResponse>>() {
+                    @Override
+                    public ObservableSource<DeviceStateResponse> apply(Long aLong) throws Exception {
+                        Map<String, String> options = setOp();
+                        RequestBody jsonBody = setBody();
+                        return getDataManager().doGetDeviceState(options,jsonBody);
+                    }
+                })
+                .takeUntil(new Predicate<DeviceStateResponse>() {
+                    @Override
+                    public boolean test(DeviceStateResponse deviceStateResponse) throws Exception {
+                        int index = getMvpView().getIndex();
+                        if (index != 0){
+                            return true;
+                        }
+                        return false;
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<DeviceStateResponse>() {
+                               @Override
+                               public void accept(DeviceStateResponse deviceStateResponse) throws Exception {
+                                    handleDeviceStateResponse(deviceStateResponse);
+                                   Timber.d("轮询出来设备状态");
+                               }
+                           },
+                        new Consumer<Throwable>() {
+                            @Override
+                            public void accept(Throwable throwable) throws Exception {
+                                Timber.d("轮询设备异常---" + throwable.getMessage());
+                            }
+                        }
+                );
+    }
 }

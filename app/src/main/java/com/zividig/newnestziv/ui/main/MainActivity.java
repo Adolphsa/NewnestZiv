@@ -7,7 +7,10 @@ import android.os.Bundle;
 import com.zividig.newnestziv.R;
 import com.zividig.newnestziv.ui.base.BaseActivity;
 import com.zividig.newnestziv.ui.customview.CustomsViewPager;
-import com.zividig.newnestziv.ui.fragment.fragmentAdapter;
+import com.zividig.newnestziv.ui.fragment.FragmentAdapter;
+import com.zividig.newnestziv.ui.fragment.mycar.MyCarMvpPresenter;
+import com.zividig.newnestziv.ui.fragment.mycar.MyCarMvpView;
+import com.zividig.newnestziv.utils.RxBus;
 
 import javax.inject.Inject;
 
@@ -23,11 +26,18 @@ public class MainActivity extends BaseActivity implements MainMvpView {
     @Inject
     MainMvpPresenter<MainMvpView> mPresenter;
 
+    @Inject
+    MyCarMvpPresenter<MyCarMvpView> mMyCarPresenter;
+
     @BindView(R.id.main_custom_view_pager)
     CustomsViewPager mViewPager;
 
     @BindView(R.id.main_tab)
     PageBottomTabLayout mTabLayoutab;
+
+    FragmentAdapter mFragmentAdapter;
+
+    int currentIndex;
 
     public static Intent getStartIntent(Context context) {
         Intent intent = new Intent(context, MainActivity.class);
@@ -57,9 +67,9 @@ public class MainActivity extends BaseActivity implements MainMvpView {
                 .addItem(android.R.drawable.ic_menu_search, "设置")
                 .addItem(android.R.drawable.ic_menu_help, "我")
                 .build();
-
-        mViewPager.setAdapter(new fragmentAdapter(getSupportFragmentManager(),
-                navigationController.getItemCount()));
+        mFragmentAdapter = new FragmentAdapter(getSupportFragmentManager(),
+                navigationController.getItemCount());
+        mViewPager.setAdapter(mFragmentAdapter);
 
         //自动适配ViewPager页面切换
         mTabLayoutab.setupWithViewPager(mViewPager);
@@ -68,6 +78,7 @@ public class MainActivity extends BaseActivity implements MainMvpView {
             @Override
             public void onSelected(int index, int old) {
                 Timber.d("选中---" + index);
+                currentIndex = index;
             }
 
             @Override
@@ -75,6 +86,11 @@ public class MainActivity extends BaseActivity implements MainMvpView {
 
             }
         });
+    }
+
+    @Override
+    public int getIndex() {
+        return currentIndex;
     }
 
     @Override
@@ -100,6 +116,10 @@ public class MainActivity extends BaseActivity implements MainMvpView {
     @Override
     protected void onDestroy() {
         mPresenter.onDetach();
+        // 移除所有Sticky事件
+        RxBus.getDefault().removeAllStickyEvents();
         super.onDestroy();
     }
+
+
 }

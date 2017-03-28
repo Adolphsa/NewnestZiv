@@ -3,7 +3,6 @@ package com.zividig.newnestziv.ui.fragment.mycar;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,10 +14,12 @@ import com.bigkoo.convenientbanner.ConvenientBanner;
 import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
 import com.zividig.newnestziv.R;
 import com.zividig.newnestziv.data.db.model.DeviceInfo;
-import com.zividig.newnestziv.ui.snap.SnapPictureActivity;
 import com.zividig.newnestziv.ui.base.BaseFragment;
+import com.zividig.newnestziv.ui.carlocation.CarLocationActivity;
 import com.zividig.newnestziv.ui.fragment.mycar.other.GridAdapter;
 import com.zividig.newnestziv.ui.fragment.mycar.other.LocalImageHolderView;
+import com.zividig.newnestziv.ui.main.MainActivity;
+import com.zividig.newnestziv.ui.snap.SnapPictureActivity;
 import com.zividig.newnestziv.utils.RxBus;
 import com.zividig.newnestziv.utils.RxBusSubscriber;
 import com.zividig.newnestziv.utils.RxSubscriptions;
@@ -100,14 +101,13 @@ public class MyCarFragment extends BaseFragment implements MyCarMvpView{
                         protected void onEvent(DeviceInfo deviceInfo) {
                             Timber.d(deviceInfo.getDeviceId());
                             String devid = deviceInfo.getDeviceId();
+                            Timber.d("rxbus中收到的devid---" + devid);
                             String subDevid = devid.substring(devid.length()-4,devid.length());
                             String temp = getString(R.string.my_car_title);
                             mTitle.setText(temp + subDevid);
-                            mPresenter.getMyCarDeviceState(devid);
-                            Timber.d("订阅");
-                            Timber.d(deviceInfo.getUserName());
+                            mPresenter.loopGetDeviceState();
+                            Timber.d("rxbus中收到的usename---" + deviceInfo.getUserName());
                         }
-
                         @Override
                         public void onError(Throwable e) {
                             super.onError(e);
@@ -116,15 +116,18 @@ public class MyCarFragment extends BaseFragment implements MyCarMvpView{
 
         RxSubscriptions.add(rxSubscription);
 
-        if (TextUtils.isEmpty((mDevid))){
-            mTitle.setText("我的车");
-            mDeviceState.setText(getString(R.string.my_car_id_is_null));
-        }else {
-            mPresenter.getMyCarDeviceState(mDevid);
-            String subDevid = mDevid.substring(mDevid.length()-4,mDevid.length());
-            String temp = getString(R.string.my_car_title);
-            mTitle.setText(temp + subDevid);
-        }
+//        if (TextUtils.isEmpty((mDevid))){
+//            Timber.d("devid为空");
+//            mTitle.setText("我的车");
+//            mDeviceState.setText(getString(R.string.my_car_id_is_null));
+//        }else {
+//            mPresenter.getMyCarDeviceState(mDevid);
+//            String subDevid = mDevid.substring(mDevid.length()-4,mDevid.length());
+//            String temp = getString(R.string.my_car_title);
+//            mTitle.setText(temp + subDevid);
+////            mDeviceState.setText("啦啦啦");
+//            Timber.d("啦啦啦");
+//        }
 
     }
 
@@ -159,6 +162,16 @@ public class MyCarFragment extends BaseFragment implements MyCarMvpView{
                         Timber.d("图片抓拍");
                         startActivity(new Intent(getContext(), SnapPictureActivity.class));
                         break;
+                    case 1:
+                        break;
+                    case 2:
+                        break;
+                    case 3:
+                        Timber.d("车辆定位");
+                        startActivity(new Intent(getContext(), CarLocationActivity.class));
+                        break;
+                    case 4:
+                        break;
                 }
             }
         });
@@ -180,21 +193,17 @@ public class MyCarFragment extends BaseFragment implements MyCarMvpView{
 
     @Override
     public void onDestroyView() {
-        mPresenter.onDetach();
+        Timber.d("MyCarFragment---onDestroyView");
+//        mPresenter.onDetach();
         super.onDestroyView();
-    }
-
-    @Override
-    protected void setUp(View view) {
 
     }
 
     @Override
-    public void setStatusBar() {
+    protected void setUp(View view) {}
 
-    }
-
-
+    @Override
+    public void setStatusBar() {}
 
     @Override
     public void onDestroy() {
@@ -205,6 +214,13 @@ public class MyCarFragment extends BaseFragment implements MyCarMvpView{
     @Override
     public void setDeviceStateTitle(String msg) {
             mDeviceState.setText(msg);
+    }
 
+    @Override
+    public int getIndex() {
+        MainActivity mainActivity = (MainActivity) getActivity();
+        int index = mainActivity.getIndex();
+        Timber.d("index---" + index);
+        return index;
     }
 }

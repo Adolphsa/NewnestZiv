@@ -4,6 +4,7 @@ package com.zividig.newnestziv.data.network;
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import com.zividig.newnestziv.ZivApp;
 import com.zividig.newnestziv.data.network.api.ZivApi;
+import com.zividig.newnestziv.data.network.model.CarLocationResponse;
 import com.zividig.newnestziv.data.network.model.DeviceListResponse;
 import com.zividig.newnestziv.data.network.model.DeviceStateResponse;
 import com.zividig.newnestziv.data.network.model.LoginResponse;
@@ -127,6 +128,11 @@ public class AppApiHelper implements ApiHelper{
     @Override
     public Observable<ResponseBody> doDownloadImage(String imageUrl) {
         return getZivApiService().downLoadImage(imageUrl);
+    }
+
+    @Override
+    public Observable<CarLocationResponse> doGetCarLocationInfo(Map<String, String> options, RequestBody body) {
+        return getZivApiService().getCarLocationInfo(options,body);
     }
 
 

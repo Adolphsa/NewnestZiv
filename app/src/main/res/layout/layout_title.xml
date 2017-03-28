@@ -13,7 +13,8 @@
         android:text="@string/my_car_device_state"
         android:textColor="@android:color/white"
         android:layout_centerVertical="true"
-        android:textSize="14sp"
+        android:textSize="13sp"
+        android:layout_marginLeft="5dp"
         />
     <TextView
         android:id="@+id/tv_device_state"
@@ -23,15 +24,15 @@
         android:text="@string/my_car_state"
         android:textColor="@android:color/white"
         android:layout_centerVertical="true"
-        android:textSize="14sp"
+        android:textSize="13sp"
         />
     <TextView
         android:id="@+id/tv_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="20sp"
+        android:textSize="18sp"
         android:gravity="center"
-        android:padding="8dp"
+        android:padding="10dp"
         android:textColor="#ffffff"
         android:layout_centerInParent="true"
         />

@@ -321,9 +321,9 @@ public class LoginPresenter<V extends LoginMvpView> extends BasePresenter<V> imp
                     addDeviceList(user, deviceListResponse);
                     //传递第0个设备ID出去
                     String devid0 =  devinfoList.get(0).getDevid();
-                    DeviceInfo DefaultDeviceInfo0 = getDataManager().queryDevice(devid0);
-                    RxBus.getDefault().post(DefaultDeviceInfo0);
-                    Timber.d("---发送第0个，devid为空");
+                    DeviceInfo defaultDeviceInfo0 = getDataManager().queryDevice(devid0);
+                    RxBus.getDefault().postSticky(defaultDeviceInfo0);
+                    Timber.d("---发送第0个，devid为---" + devid0);
                     getDataManager().setDeviceId(devid0);
                 }
             } else {
@@ -335,12 +335,12 @@ public class LoginPresenter<V extends LoginMvpView> extends BasePresenter<V> imp
                         DeviceInfo defaultDeviceInfo = getDataManager().queryDevice(defaultDevid);
 //                        RxBus.getDefault().post(defaultDeviceInfo);
                         RxBus.getDefault().postSticky(defaultDeviceInfo);
-                        Timber.d("---发送第0个，devid不为空");
+                        Timber.d("---发送第0个，devid0---" + defaultDevid);
                         getDataManager().setDeviceId(defaultDevid);
                     } else {
                         //发射当前这个ID出去
-                        RxBus.getDefault().post(deviceInfo);
-                        Timber.d("---发送当前设备ID，devid不为空");
+                        RxBus.getDefault().postSticky(deviceInfo);
+                        Timber.d("---发送当前设备ID，devid---" + deviceInfo.getDeviceId());
                         getDataManager().setDeviceId(deviceInfo.getDeviceId());
                     }
 

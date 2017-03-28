@@ -4,6 +4,11 @@
     <color name="colorPrimaryDark">#00796B</color>
     <color name="colorAccent">#009688</color>
 
+    <!--<color name="test">#FF82AB</color>-->
+    <!--<color name="top_color">#0D0D0D</color>-->
+    <!--<color name="title_bar_background">#1E212A</color>-->
+    <!--<color name="ui_background">#212c34</color>-->
+
     <color name="white">#ffffff</color>
     <color name="text_button_false">#212121</color>
     <color name="text_button_true">#424242</color>

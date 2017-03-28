@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.bm.library.PhotoView;
@@ -28,6 +29,9 @@ public class SnapPictureActivity extends BaseActivity implements SnapPictureMvpV
 
     @Inject
     SnapPictureMvpPresenter<SnapPictureMvpView> mPresenter;
+
+    @BindView(R.id.normal_back)
+    ImageButton mBack;
 
     @BindView(R.id.normal_tv_title)
     TextView mTitle;
@@ -60,7 +64,13 @@ public class SnapPictureActivity extends BaseActivity implements SnapPictureMvpV
     public void initView() {
         super.initView();
         mTitle.setText(getString(R.string.snap_title));
+        mBack.setVisibility(View.VISIBLE);
         mPhotoView.enable();
+    }
+
+    @OnClick(R.id.normal_back)
+    void onBack(View v){
+        finish();
     }
 
     @Override

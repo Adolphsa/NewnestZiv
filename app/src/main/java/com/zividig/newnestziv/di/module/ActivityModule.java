@@ -5,6 +5,9 @@ import android.content.Context;
 
 import com.zividig.newnestziv.di.ActivityContext;
 import com.zividig.newnestziv.di.PerActivity;
+import com.zividig.newnestziv.ui.carlocation.CarLocationMvpPresenter;
+import com.zividig.newnestziv.ui.carlocation.CarLocationMvpView;
+import com.zividig.newnestziv.ui.carlocation.CarLocationPresenter;
 import com.zividig.newnestziv.ui.fragment.message.MessageMvpPresenter;
 import com.zividig.newnestziv.ui.fragment.message.MessageMvpView;
 import com.zividig.newnestziv.ui.fragment.message.MessagePresenter;
@@ -104,6 +107,13 @@ public class ActivityModule {
     @Provides
     @PerActivity
     SnapPictureMvpPresenter<SnapPictureMvpView> provideSnapPicturePresenter(SnapPicturePresenter<SnapPictureMvpView>
+                                                                            presenter){
+        return presenter;
+    }
+
+    @Provides
+    @PerActivity
+    CarLocationMvpPresenter<CarLocationMvpView> provideCarLocationPresenter(CarLocationPresenter<CarLocationMvpView>
                                                                             presenter){
         return presenter;
     }

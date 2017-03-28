@@ -2,6 +2,7 @@ package com.zividig.newnestziv.di.component;
 
 import com.zividig.newnestziv.di.PerActivity;
 import com.zividig.newnestziv.di.module.ActivityModule;
+import com.zividig.newnestziv.ui.carlocation.CarLocationActivity;
 import com.zividig.newnestziv.ui.fragment.message.MessageFragment;
 import com.zividig.newnestziv.ui.fragment.my.MyFragment;
 import com.zividig.newnestziv.ui.fragment.mycar.MyCarFragment;
@@ -34,4 +35,6 @@ public interface ActivityComponent {
     void inject(MyFragment fragment);
 
     void inject(SnapPictureActivity activity);
+
+    void inject(CarLocationActivity activity);
 }

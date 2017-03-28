@@ -99,8 +99,7 @@ public class LoginActivity extends BaseActivity implements LoginMvpView {
     }
 
     @Override
-    protected void setUp() {
-    }
+    protected void setUp() {}
 
     @Override
     public void openMainActivity() {

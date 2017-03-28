@@ -1,5 +1,6 @@
 package com.zividig.newnestziv.data.network.api;
 
+import com.zividig.newnestziv.data.network.model.CarLocationResponse;
 import com.zividig.newnestziv.data.network.model.DeviceListResponse;
 import com.zividig.newnestziv.data.network.model.DeviceStateResponse;
 import com.zividig.newnestziv.data.network.model.LoginResponse;
@@ -47,4 +48,9 @@ public interface ZivApi {
     //下载图片
     @GET
     Observable<ResponseBody> downLoadImage(@Url String imageUrl);
+
+    //车辆位置
+    @Headers({"Content-Type: application/json","Accept: application/json"})
+    @POST("location/realtime")
+    Observable<CarLocationResponse> getCarLocationInfo(@QueryMap Map<String,String> options, @Body RequestBody body);
 }

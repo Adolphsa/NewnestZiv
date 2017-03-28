@@ -2,6 +2,7 @@ package com.zividig.newnestziv;
 
 import android.app.Application;
 
+import com.baidu.mapapi.SDKInitializer;
 import com.zividig.newnestziv.data.DataManager;
 import com.zividig.newnestziv.di.component.ApplicationComponent;
 import com.zividig.newnestziv.di.component.DaggerApplicationComponent;
@@ -40,6 +41,9 @@ public class ZivApp extends Application{
         mApplicationComponent.inject(this);
 
         MvpLoggers.init();
+
+        //初始化百度地图
+        SDKInitializer.initialize(getApplicationContext());
     }
 
 

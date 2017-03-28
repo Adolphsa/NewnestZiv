@@ -8,5 +8,8 @@ import com.zividig.newnestziv.ui.base.MvpView;
  */
 
 public interface MyCarMvpView extends MvpView{
+
     void setDeviceStateTitle(String msg);
+
+    int getIndex();
 }

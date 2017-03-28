@@ -6,6 +6,7 @@ import com.zividig.newnestziv.data.db.DbHelper;
 import com.zividig.newnestziv.data.db.model.DeviceInfo;
 import com.zividig.newnestziv.data.db.model.Users;
 import com.zividig.newnestziv.data.network.ApiHelper;
+import com.zividig.newnestziv.data.network.model.CarLocationResponse;
 import com.zividig.newnestziv.data.network.model.DeviceListResponse;
 import com.zividig.newnestziv.data.network.model.DeviceStateResponse;
 import com.zividig.newnestziv.data.network.model.LoginResponse;
@@ -71,6 +72,11 @@ public class AppDataManager implements DataManager{
     @Override
     public Observable<ResponseBody> doDownloadImage(String imageUrl) {
         return mApiHelper.doDownloadImage(imageUrl);
+    }
+
+    @Override
+    public Observable<CarLocationResponse> doGetCarLocationInfo(Map<String, String> options, RequestBody body) {
+        return mApiHelper.doGetCarLocationInfo(options,body);
     }
 
 

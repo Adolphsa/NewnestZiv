@@ -13,4 +13,6 @@ public interface SnapPictureMvpPresenter<V extends SnapPictureMvpView> extends M
     void onSnapClick();
 
     void onSaveImage();
+
+    void getDeviceState(String deviceID);
 }

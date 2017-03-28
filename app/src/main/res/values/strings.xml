@@ -37,5 +37,8 @@
     <!--SnapPicture-->
     <string name="snap_title">图片抓拍</string>
     <string name="snap_fail">抓图失败</string>
+    <string name="device_off">设备不在线</string>
 
+    <!--CarLocation-->
+    <string name="car_location_title">车辆定位</string>
 </resources>

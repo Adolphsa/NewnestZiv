@@ -1,5 +1,6 @@
 package com.zividig.newnestziv.data.network;
 
+import com.zividig.newnestziv.data.network.model.CarLocationResponse;
 import com.zividig.newnestziv.data.network.model.DeviceListResponse;
 import com.zividig.newnestziv.data.network.model.DeviceStateResponse;
 import com.zividig.newnestziv.data.network.model.LoginResponse;
@@ -31,4 +32,7 @@ public interface ApiHelper {
     Observable<SnapResponse> doGetImageUrl(Map<String,String> options, RequestBody body);
 
     Observable<ResponseBody> doDownloadImage(String imageUrl);
+
+    //获取车辆位置
+    Observable<CarLocationResponse> doGetCarLocationInfo(Map<String,String> options, RequestBody body);
 }

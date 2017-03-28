@@ -56,7 +56,7 @@ public abstract class BaseActivity extends AppCompatActivity
 
     @Override
     public void setStatusBar() {
-        StatusBarUtils.setColor(this,R.color.colorPrimaryDark);
+        StatusBarUtils.setColor(this,getResources().getColor(R.color.colorPrimaryDark));
     }
 
     @Override

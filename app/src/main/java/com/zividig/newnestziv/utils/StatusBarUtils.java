@@ -2,7 +2,6 @@ package com.zividig.newnestziv.utils;
 
 import android.app.Activity;
 import android.os.Build;
-import android.support.annotation.ColorRes;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -22,7 +21,7 @@ public class StatusBarUtils {
      * @param activity 需要设置的activity
      * @param color    状态栏颜色值
      */
-    public static void setColor(Activity activity, @ColorRes int color) {
+    public static void setColor(Activity activity, int color) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             // 设置状态栏透明
             activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);

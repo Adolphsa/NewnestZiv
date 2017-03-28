@@ -14,7 +14,7 @@ import com.zividig.newnestziv.ui.fragment.setting.SettingFragment;
  * on 2017-03-04.
  */
 
-public class fragmentAdapter extends FragmentPagerAdapter {
+public class FragmentAdapter extends FragmentPagerAdapter {
 
     private MyCarFragment mMyCarFragment = null; //我的车
     private MessageFragment mMessageFragment = null; //消息
@@ -23,7 +23,7 @@ public class fragmentAdapter extends FragmentPagerAdapter {
 
     private int size;
 
-    public fragmentAdapter(FragmentManager fm, int size) {
+    public FragmentAdapter(FragmentManager fm, int size) {
         super(fm);
         this.size = size;
     }

@@ -6,6 +6,8 @@ import android.text.TextUtils;
 
 import com.zividig.newnestziv.R;
 import com.zividig.newnestziv.data.DataManager;
+import com.zividig.newnestziv.data.network.model.DeviceStateBody;
+import com.zividig.newnestziv.data.network.model.DeviceStateResponse;
 import com.zividig.newnestziv.data.network.model.SnapBody;
 import com.zividig.newnestziv.data.network.model.SnapResponse;
 import com.zividig.newnestziv.ui.base.BasePresenter;
@@ -58,7 +60,67 @@ public class SnapPicturePresenter<V extends SnapPictureMvpView> extends BasePres
     public void onSnapClick() {
         getMvpView().showLoading();
         imageKey = "new";
-        getImageUrl();
+        String devid = getDataManager().getDeviceId();
+        getDeviceState(devid);
+    }
+
+    /**
+     * 获取设备状态
+     * @param deviceID  设备ID
+     */
+    @Override
+    public void getDeviceState(String deviceID) {
+
+        String token = getDataManager().getAccessToken();
+        //计算signature
+        String timestamp = UtcTimeUtils.getTimestamp();
+        String noncestr = CommonUtils.getRandomString(10);
+        String signature = SignatureUtils.getSinnature(timestamp,
+                noncestr,
+                SignatureUtils.APP_KEY,
+                deviceID,
+                token);
+
+        //配置请求头
+        Map<String, String> options = new HashMap<>();
+        options.put(SignatureUtils.SIGNATURE_APP_KEY, SignatureUtils.APP_KEY);
+        options.put(SignatureUtils.SIGNATURE_TIMESTAMP, timestamp);
+        options.put(SignatureUtils.SIGNATURE_NONCESTTR, noncestr);
+        options.put(SignatureUtils.SIGNATURE_STRING, signature);
+
+        //配置请求体
+        DeviceStateBody deviceStateBody = new DeviceStateBody();
+        deviceStateBody.devid = deviceID;
+        deviceStateBody.token = token;
+        String stringDeviceListBody = GsonUtils.GsonString(deviceStateBody);
+        RequestBody jsonBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), stringDeviceListBody);
+
+        //获取设备状态
+        getCompositeDisposable().add(getDataManager()
+                .doGetDeviceState(options, jsonBody)
+                .subscribeOn(io.reactivex.schedulers.Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<DeviceStateResponse>() {
+                    @Override
+                    public void accept(DeviceStateResponse deviceStateResponse) throws Exception {
+                        Timber.d("---设备状态---" + deviceStateResponse.getInfo().getWorkmode());
+                        String deviceState = deviceStateResponse.getInfo().getWorkmode();
+                        if (deviceState.equals("NORMAL")){
+                            getImageUrl();
+                        }else {
+                            getMvpView().onError(R.string.device_off);
+                            getMvpView().hideLoading();
+                        }
+
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Exception {
+                        Timber.d("获取设备状态异常---" + throwable.getMessage());
+                        getMvpView().showLoading();
+                    }
+                })
+        );
     }
 
     private Map<String, String> setOp(String imageKeyTest){
@@ -158,7 +220,7 @@ public class SnapPicturePresenter<V extends SnapPictureMvpView> extends BasePres
                     public boolean test(SnapResponse snapResponse) throws Exception {
                         String url = snapResponse.getUrl();
                         if (!TextUtils.isEmpty(url)){
-                            Timber.d("url不为空,停止轮询");
+                            Timber.d("停止轮询");
                             return true;
                         }
                         return false;
@@ -172,7 +234,7 @@ public class SnapPicturePresenter<V extends SnapPictureMvpView> extends BasePres
                         imageKey = snapResponse.getKey();
                         Timber.d("imagekey---" + imageKey);
                         if (!TextUtils.isEmpty(url)){
-                            Timber.d("url不为空，过滤");
+                            Timber.d("url不为空");
                             return true;
                         }
                         return false;
@@ -220,7 +282,6 @@ public class SnapPicturePresenter<V extends SnapPictureMvpView> extends BasePres
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(Throwable throwable) throws Exception {
-                        Timber.d("显示异常");
                         getMvpView().hideLoading();
                         getMvpView().onError(R.string.snap_fail);
                     }
