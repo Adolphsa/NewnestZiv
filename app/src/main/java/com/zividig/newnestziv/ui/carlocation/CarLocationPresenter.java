@@ -19,6 +19,7 @@ import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
@@ -33,6 +34,8 @@ import timber.log.Timber;
 
 public class CarLocationPresenter<V extends CarLocationMvpView> extends BasePresenter<V>
     implements CarLocationMvpPresenter<V>{
+
+    Disposable mDisposable;
 
     @Inject
     public CarLocationPresenter(DataManager dataManager, CompositeDisposable compositeDisposable) {
@@ -89,7 +92,7 @@ public class CarLocationPresenter<V extends CarLocationMvpView> extends BasePres
     @Override
     public void getCarLocation() {
 
-        Observable.interval(0,1, TimeUnit.SECONDS)
+        mDisposable = Observable.interval(0,1, TimeUnit.SECONDS)
                 .flatMap(new Function<Long, ObservableSource<CarLocationResponse>>() {
                     @Override
                     public ObservableSource<CarLocationResponse> apply(Long aLong) throws Exception {
@@ -127,6 +130,13 @@ public class CarLocationPresenter<V extends CarLocationMvpView> extends BasePres
                 String maptime =  UtcTimeUtils.unixTimeToDate(unixTime);
                 getMvpView().initMap(lat,lon,maptime);
             }
+        }
+    }
+
+    @Override
+    public void unsubscribe() {
+        if (mDisposable != null){
+            mDisposable.dispose();
         }
     }
 }

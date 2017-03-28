@@ -11,4 +11,6 @@ import com.zividig.newnestziv.ui.base.MvpPresenter;
 public interface CarLocationMvpPresenter<V extends CarLocationMvpView> extends MvpPresenter<V> {
 
     void getCarLocation();
+
+    void unsubscribe();
 }

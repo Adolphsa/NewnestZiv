@@ -84,7 +84,6 @@ public class CarLocationActivity extends BaseActivity implements CarLocationMvpV
         timeView = View.inflate(this,R.layout.layout_map_lable,null);
         mapTime = (TextView) timeView.findViewById(R.id.car_location_text);
 
-        System.out.println("默认22.549467");
         mBuilder.target(GPSConverterUtils.gpsToBaidu(new LatLng(22.549467,113.920565)))
                 .zoom(16.0f);
         mBaiduMap.setMapStatus(MapStatusUpdateFactory.newMapStatus(mBuilder.build()));
@@ -133,7 +132,10 @@ public class CarLocationActivity extends BaseActivity implements CarLocationMvpV
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mMapView.onDestroy();
+        if (mMapView != null){
+            mMapView.onDestroy();
+        }
+        mPresenter.unsubscribe();
     }
 
     @Override
