@@ -41,4 +41,16 @@
 
     <!--CarLocation-->
     <string name="car_location_title">车辆定位</string>
+
+    <!--Video-->
+    <string name="video_title">实时视频</string>
+
+    <!--CarInfo-->
+    <string name="car_info_title">车辆信息</string>
+
+    <!--Fence-->
+    <string name="fence_title">电子围栏</string>
+
+    <!--Track-->
+    <string name="track_title">轨迹查询</string>
 </resources>

@@ -136,6 +136,7 @@ public class CarLocationActivity extends BaseActivity implements CarLocationMvpV
             mMapView.onDestroy();
         }
         mPresenter.unsubscribe();
+        mPresenter.onDetach();
     }
 
     @Override

@@ -37,6 +37,10 @@
         <activity android:name=".ui.snap.SnapPictureActivity"
                   android:launchMode="singleTop"/>
         <activity android:name=".ui.carlocation.CarLocationActivity"/>
+        <activity android:name=".ui.track.TrackActivity"/>
+        <activity android:name=".ui.video.VideoActivity"/>
+        <activity android:name=".ui.fence.FenceActivity"/>
+        <activity android:name=".ui.carinfo.CarInfoActivity"/>
 
         <service
             android:name=".service.SyncService"

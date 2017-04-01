@@ -1,8 +1,13 @@
 package com.zividig.newnestziv.ui.snap;
 
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.os.Environment;
 import android.text.TextUtils;
+import android.widget.Toast;
 
 import com.zividig.newnestziv.R;
 import com.zividig.newnestziv.data.DataManager;
@@ -14,8 +19,10 @@ import com.zividig.newnestziv.ui.base.BasePresenter;
 import com.zividig.newnestziv.utils.CommonUtils;
 import com.zividig.newnestziv.utils.GsonUtils;
 import com.zividig.newnestziv.utils.SignatureUtils;
+import com.zividig.newnestziv.utils.ToastShowUtils;
 import com.zividig.newnestziv.utils.UtcTimeUtils;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
@@ -49,6 +56,7 @@ public class SnapPicturePresenter<V extends SnapPictureMvpView> extends BasePres
     private SnapBody body;
     private RequestBody jsonBody;
     private String imageKey = "new";
+    private Bitmap mBitmap;
 
     @Inject
     public SnapPicturePresenter(DataManager dataManager, CompositeDisposable compositeDisposable) {
@@ -275,6 +283,7 @@ public class SnapPicturePresenter<V extends SnapPictureMvpView> extends BasePres
                     @Override
                     public void accept(Bitmap bitmap) throws Exception {
                         Timber.d("显示图片");
+                        mBitmap = bitmap;
                         getMvpView().hideLoading();
                         getMvpView().showImage(bitmap);
 
@@ -289,8 +298,52 @@ public class SnapPicturePresenter<V extends SnapPictureMvpView> extends BasePres
     }
 
     @Override
-    public void onSaveImage() {
+    public void onSaveImage(Context context) {
 
+        if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
+            long freeSpace = Environment.getExternalStorageDirectory().getFreeSpace();
+            System.out.println("可用空间:" + freeSpace / 1000000 + "MB");
+            if ((freeSpace / 1000000.0) < 1) {
+                Toast.makeText(context, "存储空间不足", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            File zivFile = new File(Environment.getExternalStorageDirectory(), "Ziv"); //创建Ziv文件夹
+            if (!zivFile.exists()){
+                System.out.println("ziv创建");
+                zivFile.mkdirs();
+            }
+            final File imageFile = new File(zivFile ,"images");
+            if (!imageFile.exists()) {
+                System.out.println("images创建");
+                imageFile.mkdirs();
+            }
+
+            System.out.println(imageFile);
+            final String target = UtcTimeUtils.getDateAndTime() + ".png";
+            final File file = new File(imageFile,target);
+            System.out.println(target);
+
+            if (mBitmap != null){
+                CommonUtils.saveImageToGallery(context,mBitmap,file,target);
+                ToastShowUtils.showToast(context,"图片已保存");
+                updateImage(context);
+            }
+        } else {
+            ToastShowUtils.showToast(context,"请先刷新图片");
+        }
+    }
+
+    /**
+     * 更新图片
+     */
+    private void updateImage(Context context) {
+        System.out.println("realTimeShow---更新图片");
+        Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+        String path = Environment.getExternalStorageDirectory() + "/Ziv/images";
+        Uri uri = Uri.fromFile(new File(path));
+        intent.setData(uri);
+        context.sendBroadcast(intent);
     }
 
 }

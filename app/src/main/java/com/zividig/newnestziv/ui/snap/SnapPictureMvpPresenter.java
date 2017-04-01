@@ -1,5 +1,7 @@
 package com.zividig.newnestziv.ui.snap;
 
+import android.content.Context;
+
 import com.zividig.newnestziv.di.PerActivity;
 import com.zividig.newnestziv.ui.base.MvpPresenter;
 
@@ -12,7 +14,7 @@ public interface SnapPictureMvpPresenter<V extends SnapPictureMvpView> extends M
 
     void onSnapClick();
 
-    void onSaveImage();
+    void onSaveImage(Context context);
 
     void getDeviceState(String deviceID);
 }

@@ -3,6 +3,7 @@ package com.zividig.newnestziv.ui.fragment.mycar;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,11 +16,15 @@ import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
 import com.zividig.newnestziv.R;
 import com.zividig.newnestziv.data.db.model.DeviceInfo;
 import com.zividig.newnestziv.ui.base.BaseFragment;
+import com.zividig.newnestziv.ui.carinfo.CarInfoActivity;
 import com.zividig.newnestziv.ui.carlocation.CarLocationActivity;
+import com.zividig.newnestziv.ui.fence.FenceActivity;
 import com.zividig.newnestziv.ui.fragment.mycar.other.GridAdapter;
 import com.zividig.newnestziv.ui.fragment.mycar.other.LocalImageHolderView;
 import com.zividig.newnestziv.ui.main.MainActivity;
 import com.zividig.newnestziv.ui.snap.SnapPictureActivity;
+import com.zividig.newnestziv.ui.track.TrackActivity;
+import com.zividig.newnestziv.ui.video.VideoActivity;
 import com.zividig.newnestziv.utils.RxBus;
 import com.zividig.newnestziv.utils.RxBusSubscriber;
 import com.zividig.newnestziv.utils.RxSubscriptions;
@@ -116,19 +121,11 @@ public class MyCarFragment extends BaseFragment implements MyCarMvpView{
 
         RxSubscriptions.add(rxSubscription);
 
-//        if (TextUtils.isEmpty((mDevid))){
-//            Timber.d("devid为空");
-//            mTitle.setText("我的车");
-//            mDeviceState.setText(getString(R.string.my_car_id_is_null));
-//        }else {
-//            mPresenter.getMyCarDeviceState(mDevid);
-//            String subDevid = mDevid.substring(mDevid.length()-4,mDevid.length());
-//            String temp = getString(R.string.my_car_title);
-//            mTitle.setText(temp + subDevid);
-////            mDeviceState.setText("啦啦啦");
-//            Timber.d("啦啦啦");
-//        }
-
+        if (TextUtils.isEmpty((mDevid))){
+            Timber.d("devid为空");
+            mTitle.setText("我的车");
+            mDeviceState.setText(getString(R.string.my_car_id_is_null));
+        }
     }
 
     /**
@@ -163,14 +160,20 @@ public class MyCarFragment extends BaseFragment implements MyCarMvpView{
                         startActivity(new Intent(getContext(), SnapPictureActivity.class));
                         break;
                     case 1:
+                        startActivity(new Intent(getContext(), VideoActivity.class));
                         break;
                     case 2:
+                        startActivity(new Intent(getContext(), CarInfoActivity.class));
                         break;
                     case 3:
                         Timber.d("车辆定位");
                         startActivity(new Intent(getContext(), CarLocationActivity.class));
                         break;
                     case 4:
+                        startActivity(new Intent(getContext(), FenceActivity.class));
+                        break;
+                    case 5:
+                        startActivity(new Intent(getContext(),TrackActivity.class));
                         break;
                 }
             }

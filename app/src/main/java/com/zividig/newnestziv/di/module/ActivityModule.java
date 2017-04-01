@@ -5,9 +5,15 @@ import android.content.Context;
 
 import com.zividig.newnestziv.di.ActivityContext;
 import com.zividig.newnestziv.di.PerActivity;
+import com.zividig.newnestziv.ui.carinfo.CarInfoMvpPresenter;
+import com.zividig.newnestziv.ui.carinfo.CarInfoMvpView;
+import com.zividig.newnestziv.ui.carinfo.CarInfoPresenter;
 import com.zividig.newnestziv.ui.carlocation.CarLocationMvpPresenter;
 import com.zividig.newnestziv.ui.carlocation.CarLocationMvpView;
 import com.zividig.newnestziv.ui.carlocation.CarLocationPresenter;
+import com.zividig.newnestziv.ui.fence.FenceMvpPresenter;
+import com.zividig.newnestziv.ui.fence.FenceMvpView;
+import com.zividig.newnestziv.ui.fence.FencePresenter;
 import com.zividig.newnestziv.ui.fragment.message.MessageMvpPresenter;
 import com.zividig.newnestziv.ui.fragment.message.MessageMvpView;
 import com.zividig.newnestziv.ui.fragment.message.MessagePresenter;
@@ -29,6 +35,12 @@ import com.zividig.newnestziv.ui.main.MainPresenter;
 import com.zividig.newnestziv.ui.snap.SnapPictureMvpPresenter;
 import com.zividig.newnestziv.ui.snap.SnapPictureMvpView;
 import com.zividig.newnestziv.ui.snap.SnapPicturePresenter;
+import com.zividig.newnestziv.ui.track.TrackMvpPresenter;
+import com.zividig.newnestziv.ui.track.TrackMvpView;
+import com.zividig.newnestziv.ui.track.TrackPresenter;
+import com.zividig.newnestziv.ui.video.VideoMvpPresenter;
+import com.zividig.newnestziv.ui.video.VideoMvpView;
+import com.zividig.newnestziv.ui.video.VideoPresenter;
 
 import dagger.Module;
 import dagger.Provides;
@@ -115,6 +127,30 @@ public class ActivityModule {
     @PerActivity
     CarLocationMvpPresenter<CarLocationMvpView> provideCarLocationPresenter(CarLocationPresenter<CarLocationMvpView>
                                                                             presenter){
+        return presenter;
+    }
+
+    @Provides
+    @PerActivity
+    TrackMvpPresenter<TrackMvpView> provideTrackPresenter(TrackPresenter<TrackMvpView> presenter){
+        return presenter;
+    }
+
+    @Provides
+    @PerActivity
+    VideoMvpPresenter<VideoMvpView> provideVideoPresenter(VideoPresenter<VideoMvpView> presenter){
+        return presenter;
+    }
+
+    @Provides
+    @PerActivity
+    CarInfoMvpPresenter<CarInfoMvpView> provideCarInfoPresenter(CarInfoPresenter<CarInfoMvpView> presenter){
+        return presenter;
+    }
+
+    @Provides
+    @PerActivity
+    FenceMvpPresenter<FenceMvpView> provideFencePresenter(FencePresenter<FenceMvpView> presenter){
         return presenter;
     }
 }

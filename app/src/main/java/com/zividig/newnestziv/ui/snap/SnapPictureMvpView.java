@@ -12,4 +12,5 @@ import com.zividig.newnestziv.ui.base.MvpView;
 public interface SnapPictureMvpView extends MvpView {
 
     void showImage(Bitmap bitmap);
+
 }

@@ -84,14 +84,22 @@ public class SnapPictureActivity extends BaseActivity implements SnapPictureMvpV
         Timber.d("抓图");
     }
 
-    @Override
-    protected void onDestroy() {
-        mPresenter.onDetach();
-        super.onDestroy();
+    @OnClick(R.id.snap_bt_downImage)
+    void onSaveImage(View view){
+        Timber.d("保存图片");
+        mPresenter.onSaveImage(SnapPictureActivity.this);
     }
 
     @Override
     public void showImage(Bitmap bitmap) {
         mPhotoView.setImageBitmap(bitmap);
     }
+
+    @Override
+    protected void onDestroy() {
+        mPresenter.onDetach();
+        super.onDestroy();
+    }
+
+
 }
