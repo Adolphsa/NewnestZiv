@@ -25,12 +25,12 @@ public class GridAdapter extends BaseAdapter{
             "轨迹查询"};
 
     private int[] itemImages = {
-            R.drawable.ic_photo_camera_cyan_500_36dp,
-            R.drawable.ic_play_circle_outline_light_blue_300_36dp,
-            R.drawable.ic_toc_indigo_400_36dp,
-            R.drawable.ic_place_blue_400_36dp,
-            R.drawable.ic_web_asset_cyan_a400_36dp,
-            R.drawable.ic_timeline_deep_orange_400_36dp};
+            R.drawable.snap_main,
+            R.drawable.video_main,
+            R.drawable.carinfo_main,
+            R.drawable.car_location_main,
+            R.drawable.fence_main,
+            R.drawable.track_main};
 
     private Context mContext;
 

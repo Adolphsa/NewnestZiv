@@ -51,6 +51,7 @@ public class FragmentAdapter extends FragmentPagerAdapter {
                     if(null == mMyFragment)
                         mMyFragment = MyFragment.newInstance();
                     return mMyFragment;
+
                 default:
                     break;
             }

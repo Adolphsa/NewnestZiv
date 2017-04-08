@@ -72,7 +72,7 @@ dependencies {
     compile 'com.android.support:support-vector-drawable:25.2.0'
     compile 'com.android.support:animated-vector-drawable:25.2.0'
     //NavigationTab
-    compile 'me.majiajie:pager-bottom-tab-strip:2.0.0'
+    compile 'me.majiajie:pager-bottom-tab-strip:2.1.0'
     //轮播器
     compile 'com.bigkoo:convenientbanner:2.0.5'
     //图片控件
@@ -106,4 +106,7 @@ dependencies {
 
     //百度地图jar包
     compile files('libs/BaiduLBS_Android.jar')
+
+    //dialog
+    compile 'cn.pedant.sweetalert:library:1.3'
 }

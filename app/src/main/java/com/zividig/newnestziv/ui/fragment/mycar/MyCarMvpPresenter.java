@@ -17,4 +17,6 @@ public interface MyCarMvpPresenter<V extends MyCarMvpView> extends MvpPresenter<
     void getMyCarDeviceState(String deviceID);
 
     void loopGetDeviceState();
+
+    void stopLoop();
 }

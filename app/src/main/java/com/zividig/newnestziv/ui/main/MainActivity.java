@@ -69,21 +69,27 @@ public class MainActivity extends BaseActivity implements MainMvpView {
                 .build();
         mFragmentAdapter = new FragmentAdapter(getSupportFragmentManager(),
                 navigationController.getItemCount());
+        mViewPager.setOffscreenPageLimit(4);
         mViewPager.setAdapter(mFragmentAdapter);
 
         //自动适配ViewPager页面切换
-        mTabLayoutab.setupWithViewPager(mViewPager);
+        navigationController.setupWithViewPager(mViewPager);
 
         navigationController.addTabItemSelectedListener(new OnTabItemSelectedListener() {
             @Override
             public void onSelected(int index, int old) {
                 Timber.d("选中---" + index);
                 currentIndex = index;
+                if (0 == index){
+                    mMyCarPresenter.loopGetDeviceState();
+                }else {
+                    mMyCarPresenter.stopLoop();
+                }
             }
 
             @Override
-            public void onRepeat(int index) {
-
+            public void onRepeat(int index){
+                Timber.d("重复触发了---" + index);
             }
         });
     }

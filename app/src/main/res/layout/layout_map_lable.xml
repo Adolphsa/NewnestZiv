@@ -23,7 +23,7 @@
         android:layout_height="wrap_content"
         android:scaleType="centerCrop"
         android:padding="5dip"
-        android:src="@drawable/ic_place_green_a400_36dp"
+        android:src="@drawable/car_location_marker"
         android:layout_gravity="center_horizontal"/>
 
 </LinearLayout>

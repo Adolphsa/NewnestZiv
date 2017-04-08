@@ -9,4 +9,8 @@ import com.zividig.newnestziv.ui.base.MvpPresenter;
  */
 @PerActivity
 public interface FenceMvpPresenter<V extends FenceMvpView> extends MvpPresenter<V> {
+
+    void getLocation();
+
+
 }

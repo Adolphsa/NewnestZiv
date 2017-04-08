@@ -14,6 +14,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import timber.log.Timber;
 
 /**
  * Created by adolph
@@ -48,7 +49,7 @@ public class MessageFragment extends BaseFragment implements MessageMvpView {
         mPresenter.onAttach(this);
 
         initView();
-
+        Timber.d("哈哈哈1");
         return view;
     }
 

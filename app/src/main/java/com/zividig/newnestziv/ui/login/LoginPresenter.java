@@ -14,7 +14,6 @@ import com.zividig.newnestziv.ui.base.BasePresenter;
 import com.zividig.newnestziv.utils.CommonUtils;
 import com.zividig.newnestziv.utils.GsonUtils;
 import com.zividig.newnestziv.utils.MD5;
-import com.zividig.newnestziv.utils.RxBus;
 import com.zividig.newnestziv.utils.SignatureUtils;
 import com.zividig.newnestziv.utils.UtcTimeUtils;
 
@@ -46,7 +45,6 @@ public class LoginPresenter<V extends LoginMvpView> extends BasePresenter<V> imp
 
     @Override
     public Users getUsers() {
-
         String user = getDataManager().getUser();
         return getDataManager().queryUser(user);
     }
@@ -322,7 +320,7 @@ public class LoginPresenter<V extends LoginMvpView> extends BasePresenter<V> imp
                     //传递第0个设备ID出去
                     String devid0 =  devinfoList.get(0).getDevid();
                     DeviceInfo defaultDeviceInfo0 = getDataManager().queryDevice(devid0);
-                    RxBus.getDefault().postSticky(defaultDeviceInfo0);
+//                    RxBus.getDefault().postSticky(defaultDeviceInfo0);
                     Timber.d("---发送第0个，devid为---" + devid0);
                     getDataManager().setDeviceId(devid0);
                 }
@@ -334,12 +332,12 @@ public class LoginPresenter<V extends LoginMvpView> extends BasePresenter<V> imp
                         String defaultDevid = devinfoList.get(0).getDevid();
                         DeviceInfo defaultDeviceInfo = getDataManager().queryDevice(defaultDevid);
 //                        RxBus.getDefault().post(defaultDeviceInfo);
-                        RxBus.getDefault().postSticky(defaultDeviceInfo);
+//                        RxBus.getDefault().postSticky(defaultDeviceInfo);
                         Timber.d("---发送第0个，devid0---" + defaultDevid);
                         getDataManager().setDeviceId(defaultDevid);
                     } else {
                         //发射当前这个ID出去
-                        RxBus.getDefault().postSticky(deviceInfo);
+//                        RxBus.getDefault().postSticky(deviceInfo);
                         Timber.d("---发送当前设备ID，devid---" + deviceInfo.getDeviceId());
                         getDataManager().setDeviceId(deviceInfo.getDeviceId());
                     }

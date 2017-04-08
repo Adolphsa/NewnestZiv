@@ -19,4 +19,10 @@ public class FencePresenter<V extends FenceMvpView> extends BasePresenter<V>
     public FencePresenter(DataManager dataManager, CompositeDisposable compositeDisposable) {
         super(dataManager, compositeDisposable);
     }
+
+
+    @Override
+    public void getLocation() {
+
+    }
 }

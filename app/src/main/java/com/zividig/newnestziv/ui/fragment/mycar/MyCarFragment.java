@@ -14,7 +14,6 @@ import android.widget.TextView;
 import com.bigkoo.convenientbanner.ConvenientBanner;
 import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
 import com.zividig.newnestziv.R;
-import com.zividig.newnestziv.data.db.model.DeviceInfo;
 import com.zividig.newnestziv.ui.base.BaseFragment;
 import com.zividig.newnestziv.ui.carinfo.CarInfoActivity;
 import com.zividig.newnestziv.ui.carlocation.CarLocationActivity;
@@ -25,9 +24,6 @@ import com.zividig.newnestziv.ui.main.MainActivity;
 import com.zividig.newnestziv.ui.snap.SnapPictureActivity;
 import com.zividig.newnestziv.ui.track.TrackActivity;
 import com.zividig.newnestziv.ui.video.VideoActivity;
-import com.zividig.newnestziv.utils.RxBus;
-import com.zividig.newnestziv.utils.RxBusSubscriber;
-import com.zividig.newnestziv.utils.RxSubscriptions;
 
 import java.util.ArrayList;
 
@@ -87,44 +83,59 @@ public class MyCarFragment extends BaseFragment implements MyCarMvpView{
 
         mPresenter.onAttach(this);
 
-        Timber.d("哈哈哈");
+
         initView();
         initAd();
         initFunctionButton();
 
+        Timber.d("哈哈哈0");
         mDevid = mPresenter.getDeviceId();
+        Timber.d("取到的devid---" + mDevid);
 
+        setTitle();
         return view;
     }
 
     @Override
     public void initView() {
 
-        rxSubscription = RxBus.getDefault().toObservableSticky(DeviceInfo.class)
-                    .subscribe(new RxBusSubscriber<DeviceInfo>() {
-                        @Override
-                        protected void onEvent(DeviceInfo deviceInfo) {
-                            Timber.d(deviceInfo.getDeviceId());
-                            String devid = deviceInfo.getDeviceId();
-                            Timber.d("rxbus中收到的devid---" + devid);
-                            String subDevid = devid.substring(devid.length()-4,devid.length());
-                            String temp = getString(R.string.my_car_title);
-                            mTitle.setText(temp + subDevid);
-                            mPresenter.loopGetDeviceState();
-                            Timber.d("rxbus中收到的usename---" + deviceInfo.getUserName());
-                        }
-                        @Override
-                        public void onError(Throwable e) {
-                            super.onError(e);
-                        }
-                    });
+//        rxSubscription = RxBus.getDefault().toObservableSticky(DeviceInfo.class)
+//                    .subscribe(new RxBusSubscriber<DeviceInfo>() {
+//                        @Override
+//                        protected void onEvent(DeviceInfo deviceInfo) {
+//                            Timber.d(deviceInfo.getDeviceId());
+//                            String devid = deviceInfo.getDeviceId();
+//                            Timber.d("rxbus中收到的devid---" + devid);
+//
+//                            mPresenter.loopGetDeviceState();
+//                            Timber.d("rxbus中收到的usename---" + deviceInfo.getUserName());
+//                        }
+//                        @Override
+//                        public void onError(Throwable e) {
+//                            super.onError(e);
+//                        }
+//                    });
 
-        RxSubscriptions.add(rxSubscription);
+//        RxSubscriptions.add(rxSubscription);
 
+//        if (TextUtils.isEmpty((mDevid))){
+//            Timber.d("devid为空");
+//            mTitle.setText("我的车");
+//            mDeviceState.setText(getString(R.string.my_car_id_is_null));
+//        }
+    }
+
+    private void setTitle(){
+
+        mDevid = mPresenter.getDeviceId();
         if (TextUtils.isEmpty((mDevid))){
             Timber.d("devid为空");
             mTitle.setText("我的车");
             mDeviceState.setText(getString(R.string.my_car_id_is_null));
+        }else {
+            String subDevid = mDevid.substring(mDevid.length()-4,mDevid.length());
+            String temp = getString(R.string.my_car_title);
+            mTitle.setText(temp + subDevid);
         }
     }
 
@@ -156,7 +167,6 @@ public class MyCarFragment extends BaseFragment implements MyCarMvpView{
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 switch (position){
                     case 0:
-                        Timber.d("图片抓拍");
                         startActivity(new Intent(getContext(), SnapPictureActivity.class));
                         break;
                     case 1:
@@ -166,7 +176,6 @@ public class MyCarFragment extends BaseFragment implements MyCarMvpView{
                         startActivity(new Intent(getContext(), CarInfoActivity.class));
                         break;
                     case 3:
-                        Timber.d("车辆定位");
                         startActivity(new Intent(getContext(), CarLocationActivity.class));
                         break;
                     case 4:
@@ -185,6 +194,8 @@ public class MyCarFragment extends BaseFragment implements MyCarMvpView{
         super.onResume();
         //开始自动翻页
         mConvenientBanner.startTurning(3000);
+        mPresenter.loopGetDeviceState();
+        setTitle();
         Timber.d("MyCarFragment---onResume");
     }
 
@@ -192,6 +203,13 @@ public class MyCarFragment extends BaseFragment implements MyCarMvpView{
     public void onPause() {
         super.onPause();
         mConvenientBanner.stopTurning();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Timber.d("MyCarFragment---onStop");
+        mPresenter.stopLoop();
     }
 
     @Override
@@ -211,7 +229,7 @@ public class MyCarFragment extends BaseFragment implements MyCarMvpView{
     @Override
     public void onDestroy() {
         super.onDestroy();
-        RxSubscriptions.remove(rxSubscription);
+//        RxSubscriptions.remove(rxSubscription);
     }
 
     @Override

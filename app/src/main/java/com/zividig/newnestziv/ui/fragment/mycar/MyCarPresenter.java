@@ -21,9 +21,9 @@ import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
-import io.reactivex.functions.Predicate;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
@@ -41,6 +41,8 @@ public class MyCarPresenter<V extends MyCarMvpView> extends BasePresenter<V>
     public MyCarPresenter(DataManager dataManager, CompositeDisposable compositeDisposable) {
         super(dataManager, compositeDisposable);
     }
+
+    private Disposable mDisposable;
 
     @Override
     public void getMyCarDeviceState(String deviceID) {
@@ -188,40 +190,48 @@ public class MyCarPresenter<V extends MyCarMvpView> extends BasePresenter<V>
     @Override
     public void loopGetDeviceState() {
 
-        Observable.interval(0,30, TimeUnit.SECONDS)
-                .flatMap(new Function<Long, ObservableSource<DeviceStateResponse>>() {
-                    @Override
-                    public ObservableSource<DeviceStateResponse> apply(Long aLong) throws Exception {
-                        Map<String, String> options = setOp();
-                        RequestBody jsonBody = setBody();
-                        return getDataManager().doGetDeviceState(options,jsonBody);
-                    }
-                })
-                .takeUntil(new Predicate<DeviceStateResponse>() {
-                    @Override
-                    public boolean test(DeviceStateResponse deviceStateResponse) throws Exception {
-                        int index = getMvpView().getIndex();
-                        if (index != 0){
-                            return true;
+        if (mDisposable == null){
+
+            mDisposable = Observable.interval(0,30, TimeUnit.SECONDS)
+                    .flatMap(new Function<Long, ObservableSource<DeviceStateResponse>>() {
+                        @Override
+                        public ObservableSource<DeviceStateResponse> apply(Long aLong) throws Exception {
+                            Map<String, String> options = setOp();
+                            RequestBody jsonBody = setBody();
+                            return getDataManager().doGetDeviceState(options,jsonBody);
                         }
-                        return false;
-                    }
-                })
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<DeviceStateResponse>() {
-                               @Override
-                               public void accept(DeviceStateResponse deviceStateResponse) throws Exception {
-                                    handleDeviceStateResponse(deviceStateResponse);
-                                   Timber.d("轮询出来设备状态");
-                               }
-                           },
-                        new Consumer<Throwable>() {
-                            @Override
-                            public void accept(Throwable throwable) throws Exception {
-                                Timber.d("轮询设备异常---" + throwable.getMessage());
+                    })
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Consumer<DeviceStateResponse>() {
+                                   @Override
+                                   public void accept(DeviceStateResponse deviceStateResponse) throws Exception {
+                                       handleDeviceStateResponse(deviceStateResponse);
+                                       Timber.d("轮询处理设备状态");
+                                   }
+                               },
+                            new Consumer<Throwable>() {
+                                @Override
+                                public void accept(Throwable throwable) throws Exception {
+                                    Timber.d("轮询设备异常---" + throwable.getMessage());
+                                }
                             }
-                        }
-                );
+                    );
+        }else {
+            Timber.d("mDisposable不为空");
+            stopLoop();
+        }
+
+    }
+
+    @Override
+    public void stopLoop() {
+        Timber.d("stopLoop");
+        if (mDisposable != null){
+            Timber.d("----------");
+            mDisposable.dispose();
+
+            mDisposable = null;
+        }
     }
 }

@@ -11,7 +11,7 @@
         android:id="@+id/grid_item_image"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:src="@drawable/ic_photo_camera_cyan_500_36dp"
+        android:src="@drawable/snap_main"
         android:layout_gravity="center"
         android:scaleType="fitXY"
         android:layout_margin="13dp"
